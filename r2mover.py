@@ -16,8 +16,9 @@
 
 import rclpy
 from rclpy.node import Node
+from std_msgs.msg import Bool
 import geometry_msgs.msg
-
+from time import sleep
 # constants
 rotatechange = 0.1
 speedchange = 0.05
@@ -27,12 +28,14 @@ class Mover(Node):
     def __init__(self):
         super().__init__('mover')
         self.publisher_ = self.create_publisher(geometry_msgs.msg.Twist,'cmd_vel',10)
+        self.mything = True
+        
 
 # function to read keyboard input
     def readKey(self):
         twist = geometry_msgs.msg.Twist()
         try:
-            while True:
+            while self.mything:
                 # get keyboard input
                 cmd_char = str(input("Keys w/x a/d s: "))
         
@@ -57,6 +60,10 @@ class Mover(Node):
                     # turn clockwise
                     twist.linear.x = 0.0
                     twist.angular.z -= rotatechange
+                elif cmd_char == 'STFU':
+                    # turn clockwise
+                    self.mything = False
+                    
 
                 # start the movement
                 self.publisher_.publish(twist)
@@ -71,17 +78,15 @@ class Mover(Node):
             twist.angular.z = 0.0
             self.publisher_.publish(twist)
 
+    
+
 
 def main(args=None):
     rclpy.init(args=args)
 
     mover = Mover()
+    mover.init_node()
     mover.readKey()
-
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-    mover.destroy_node()
     
     rclpy.shutdown()
 

@@ -1,3 +1,141 @@
+#! /usr/bin/env python
+
+# import ros stuff
+import rclpy
+from sensor_msgs.msg import LaserScan
+from geometry_msgs.msg import Twist
+from nav_msgs.msg import Odometry
+# from rclpy.tf import transformations
+
+import math
+
+pub_ = None
+regions_ = {
+  'right': 0,
+  'fright': 0,
+  'front': 0,
+  'fleft': 0,
+  'left': 0,
+}
+state_ = 0
+state_dict_ = {
+  0: 'find the wall',
+  1: 'turn left',
+  2: 'follow the wall',
+}
+
+def clbk_laser(msg):
+  global regions_
+  regions_ = {
+      'right':  min(min(msg.ranges[0:143]), 10),
+      'fright': min(min(msg.ranges[144:287]), 10),
+      'front':  min(min(msg.ranges[288:431]), 10),
+      'fleft':  min(min(msg.ranges[432:575]), 10),
+      'left':   min(min(msg.ranges[576:713]), 10),
+  }
+
+  take_action()
+
+
+def change_state(state):
+  global state_, state_dict_
+  if state is not state_:
+      print %(state, state_dict_[state])
+      state_ = state
+
+def take_action():
+    global regions_
+    regions = regions_
+    msg = Twist()
+    linear_x = 0
+    angular_z = 0
+    
+    state_description = ''
+    
+    d = 1.5
+    
+    if regions['front'] > d and regions['fleft'] > d and regions['fright'] > d:
+        state_description = 'case 1 - nothing'
+        change_state(0)
+    elif regions['front'] < d and regions['fleft'] > d and regions['fright'] > d:
+        state_description = 'case 2 - front'
+        change_state(1)
+    elif regions['front'] > d and regions['fleft'] > d and regions['fright'] < d:
+        state_description = 'case 3 - fright'
+        change_state(2)
+    elif regions['front'] > d and regions['fleft'] < d and regions['fright'] > d:
+        state_description = 'case 4 - fleft'
+        change_state(0)
+    elif regions['front'] < d and regions['fleft'] > d and regions['fright'] < d:
+        state_description = 'case 5 - front and fright'
+        change_state(1)
+    elif regions['front'] < d and regions['fleft'] < d and regions['fright'] > d:
+        state_description = 'case 6 - front and fleft'
+        change_state(1)
+    elif regions['front'] < d and regions['fleft'] < d and regions['fright'] < d:
+        state_description = 'case 7 - front and fleft and fright'
+        change_state(1)
+    elif regions['front'] > d and regions['fleft'] < d and regions['fright'] < d:
+        state_description = 'case 8 - fleft and fright'
+        change_state(0)
+    else:
+        state_description = 'unknown case'
+        rclpy .loginfo(regions)
+        
+def find_wall():
+    msg = Twist()
+    msg.linear.x = 0.2
+    msg.angular.z = -0.3
+    return msg
+
+def turn_left():
+    msg = Twist()
+    msg.angular.z = 0.3
+    return msg
+
+def follow_the_wall():
+    global regions_
+    
+    msg = Twist()
+    msg.linear.x = 0.5
+    return msg
+
+def main():
+  global pub_
+
+  rclpy.init_node('reading_laser')
+
+  pub_ = rclpy.Publisher('/cmd_vel', Twist, queue_size=1)
+
+  sub = rclpy.Subscriber('/m2wr/laser/scan', LaserScan, clbk_laser)
+
+  rate = rclpy.Rate(20)
+  while not rclpy.is_shutdown():
+    msg = Twist()
+    if state_ == 0:
+      msg = find_wall()
+    elif state_ == 1:
+      msg = turn_left()
+    elif state_ == 2:
+      msg = follow_the_wall()
+      pass
+    else:
+      rclpy.logerr('Unknown state!')
+    
+    pub_.publish(msg)
+    
+    rate.sleep()
+
+if __name__ == '__main__':
+    main()
+
+########################################
+########################################
+########################################
+########################################
+########################################
+
+
 # Copyright 2016 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,8 +157,6 @@ from geometry_msgs.msg import Twist
 from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import OccupancyGrid
-from std_msgs.msg import Bool
-from time import sleep
 import numpy as np
 import math
 import cmath
@@ -99,36 +235,6 @@ class AutoNav(Node):
         self.scan_subscription  # prevent unused variable warning
         self.laser_range = np.array([])
 
-        self.nfcsubscription = self.create_subscription(Bool,
-        'NFC_presence',
-        self.NFC_callback,
-        10)
-        self.mything = True
-
-    def spinAround(self):
-        twist = Twist()
-        try:
-            twist.linear.x = 0.0
-            twist.angular.z = 1.0
-            # check which key was entered
-            # start the movement
-            self.publisher_.publish(twist)
-            sleep(3.14/1)
-                
-        except Exception as e:
-            print(e)
-            
-		# Ctrl-c detected
-        finally:
-        	# stop moving
-            twist.linear.x = 0.0
-            twist.angular.z = 0.0
-            self.publisher_.publish(twist)
-
-    def NFC_callback(self,msg):
-        if msg.data == True:
-            self.mything = False
-        print(msg.data)
 
     def odom_callback(self, msg):
         # self.get_logger().info('In odom_callback')
@@ -200,7 +306,7 @@ class AutoNav(Node):
         # self.get_logger().info('c_change_dir: %f c_dir_diff: %f' % (c_change_dir, c_dir_diff))
         # if the rotation direction was 1.0, then we will want to stop when the c_dir_diff
         # becomes -1.0, and vice versa
-        while(c_change_dir * c_dir_diff > 0) and self.mything:
+        while(c_change_dir * c_dir_diff > 0):
             # allow the callback functions to run
             rclpy.spin_once(self)
             current_yaw = self.yaw
@@ -279,12 +385,6 @@ class AutoNav(Node):
                         # start moving
                         self.pick_direction()
                     
-                    if self.mything == False:
-                        self.stopbot()
-                        self.spinAround()
-                        self.destroy_node()
-                        rclpy.shutdown()
-
                 # allow the callback functions to run
                 rclpy.spin_once(self)
 
