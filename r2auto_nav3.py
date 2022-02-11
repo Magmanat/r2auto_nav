@@ -106,7 +106,7 @@ class AutoNav(Node):
         'target_frame').get_parameter_value().string_value
     
         self.tf_buffer = Buffer()
-        self.tf_listener = TransformListener(self.tf_buffer, self)
+        self.tf_listener = TransformListener(self.tf_buffer,self, spin_thread=True)
         # create subscription to track lidar
         # self.scan_subscription = self.create_subscription(
         #     LaserScan,
@@ -151,6 +151,7 @@ class AutoNav(Node):
 
 
     def occ_callback(self, msg):
+        print("map published")
         occdata = np.array(msg.data)
         # compute histogram to identify bins with -1, values between 0 and below 50, 
         # and values between 50 and 50. The binned_statistic function will also
@@ -172,7 +173,7 @@ class AutoNav(Node):
         to_frame_rel = 'map'
     
         trans = None
-        
+        transchecker = None
         try:
             now = rclpy.time.Time()
             trans = self.tf_buffer.lookup_transform(
@@ -321,22 +322,22 @@ class AutoNav(Node):
       square = [[-2,2],[-1,2],[0,2],[1,2],[2,2],[-2,1],[-1,1],[0,1],[1,1],[2,1],[-2,0],[-1,0],[0,0],[1,0],[2,0],[-2,-1],[-1,-1],[0,-1],[1,-1],[2,-1],[-2,-2],[-1,-2],[0,-2],[1,-2],[2,-2]]
       if direction == 'right':
         for i in square:
-          if self.mazelayout[self.Ypos - 4 + i[1]][self.Xpos + i[0]] == 3:
+          if self.mazelayout[self.Ypos - 3 + i[1]][self.Xpos + i[0]] == 3:
             print("right obstacle")
             return False
       elif direction == 'up':
         for i in square:
-          if self.mazelayout[self.Ypos + i[1]][self.Xpos + 4 + i[0]] == 3:
+          if self.mazelayout[self.Ypos + i[1]][self.Xpos + 3 + i[0]] == 3:
             print("up obstacle")
             return False
       elif direction == 'left':
         for i in square:
-          if self.mazelayout[self.Ypos + 4 + i[1]][self.Xpos + i[0]] == 3:
+          if self.mazelayout[self.Ypos + 3 + i[1]][self.Xpos + i[0]] == 3:
             print("left obstacle")
             return False
       elif direction == 'down':
         for i in square:
-          if self.mazelayout[self.Ypos+ i[1]][self.Xpos - 4 + i[0]] == 3:
+          if self.mazelayout[self.Ypos+ i[1]][self.Xpos - 3 + i[0]] == 3:
             print("down obstacle")
             return False
       print(direction + " not obstacle")
@@ -355,26 +356,26 @@ class AutoNav(Node):
       # np.savetxt(mapfile, self.visitedarray)
       if direction == 'right':
         for i in square:
-          print(self.visitedarray[self.YposNoAdjust - 4 + i[1]][self.XposNoAdjust + i[0]])
-          if self.visitedarray[self.YposNoAdjust - 4 + i[1]][self.XposNoAdjust + i[0]] == 1:
+          # print(self.visitedarray[self.YposNoAdjust - 3 + i[1]][self.XposNoAdjust + i[0]])
+          if self.visitedarray[self.YposNoAdjust - 3 + i[1]][self.XposNoAdjust + i[0]] == 1:
             print("right visited")
             return True
       elif direction == 'up':
         for i in square:
-          print(self.visitedarray[self.YposNoAdjust + i[1]][self.XposNoAdjust + 4 + i[0]])
-          if self.visitedarray[self.YposNoAdjust + i[1]][self.XposNoAdjust + 4 + i[0]] == 1:
+          # print(self.visitedarray[self.YposNoAdjust + i[1]][self.XposNoAdjust + 3 + i[0]])
+          if self.visitedarray[self.YposNoAdjust + i[1]][self.XposNoAdjust + 3 + i[0]] == 1:
             print("up visited")
             return True
       elif direction == 'left':
         for i in square:
-          print(self.visitedarray[self.YposNoAdjust + 4 + i[1]][self.XposNoAdjust + i[0]])
-          if self.visitedarray[self.YposNoAdjust + 4 + i[1]][self.XposNoAdjust + i[0]] == 1:
+          # print(self.visitedarray[self.YposNoAdjust + 3 + i[1]][self.XposNoAdjust + i[0]])
+          if self.visitedarray[self.YposNoAdjust + 3 + i[1]][self.XposNoAdjust + i[0]] == 1:
             print("left visited")
             return True
       elif direction == 'down':
         for i in square:
-          print(self.visitedarray[self.YposNoAdjust+ i[1]][self.XposNoAdjust - 4 + i[0]])
-          if self.visitedarray[self.YposNoAdjust+ i[1]][self.XposNoAdjust - 4 + i[0]] == 1:
+          # print(self.visitedarray[self.YposNoAdjust+ i[1]][self.XposNoAdjust - 3 + i[0]]) 
+          if self.visitedarray[self.YposNoAdjust+ i[1]][self.XposNoAdjust - 3 + i[0]] == 1:
             print("down visited")
             return True
       print(direction + " not visited")
@@ -390,16 +391,16 @@ class AutoNav(Node):
         directions = [['up','down'],['right','left'],['down','up'],['left','right']]
         while self.phase1:
             needbacktrack = False
+            for b in range(100):
+                        rclpy.spin_once(self)
             for i in range(len(directions)):
                 # print("in directions")
-                for b in range(100):
-                        rclpy.spin_once(self)
                 if (not self.is_visited(directions[i][0])) and (self.is_empty(directions[i][0])):
                     # print("in recursive maze")
                     self.move(directions[i][0])
                     self.previousaction.append(directions[i][1])
                     break
-                if i == len(directions):
+                if i == len(directions) - 1:
                     print("end of for loop")
                     needbacktrack = True
             if needbacktrack == True:
