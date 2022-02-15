@@ -14,7 +14,7 @@
 
 import rclpy
 from rclpy.node import Node
-from nav_msgs.msg import Odometry
+from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Twist
 from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import LaserScan
@@ -81,13 +81,12 @@ class AutoNav(Node):
         # self.get_logger().info('Created publisher')
         
         # create subscription to track orientation
-        self.odom_subscription = self.create_subscription(
-            Odometry,
-            'odom',
-            self.odom_callback,
+        self.map2base_sub = self.create_subscription(
+            Pose,
+            'map2base',
+            self.map2base_callback,
             10)
         # self.get_logger().info('Created subscriber')
-        self.odom_subscription  # prevent unused variable warning
         # initialize variables
         self.roll = 0
         self.pitch = 0
@@ -98,15 +97,11 @@ class AutoNav(Node):
             OccupancyGrid,
             'map',
             self.occ_callback,
-            qos_profile_sensor_data)
+            10)
         self.occ_subscription  # prevent unused variable warning
+
+        self.mapbase = None
         
-        self.declare_parameter('target_frame', 'base_footprint')
-        self.target_frame = self.get_parameter(
-        'target_frame').get_parameter_value().string_value
-    
-        self.tf_buffer = Buffer()
-        self.tf_listener = TransformListener(self.tf_buffer,self, spin_thread=True)
         # create subscription to track lidar
         # self.scan_subscription = self.create_subscription(
         #     LaserScan,
@@ -143,10 +138,11 @@ class AutoNav(Node):
     #         self.phase2 = True
     #         self.nfcsubscription.reset()
 
-    def odom_callback(self, msg):
-        # self.get_logger().info('In odom_callback')
-        orientation_quat =  msg.pose.pose.orientation
-        self.roll, self.pitch, self.yaw = euler_from_quaternion(orientation_quat.x, orientation_quat.y, orientation_quat.z, orientation_quat.w)
+    def map2base_callback(self, msg):
+        # self.get_logger().info('In map2basecallback')
+        
+        self.mapbase = msg.position
+        self.roll, self.pitch, self.yaw = euler_from_quaternion(msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w)
 
 
 
@@ -169,32 +165,14 @@ class AutoNav(Node):
         # convert into 2D array using column order
         self.mazelayout = np.uint8(binnum.reshape(msg.info.height,msg.info.width))
 
-        from_frame_rel = self.target_frame
-        to_frame_rel = 'map'
-        now = rclpy.time.Time()
-        trans = None
-        try:
-            self.get_logger().info('Looking for transform')
-            
-            # while not self.tf_buffer.can_transform(to_frame_rel, from_frame_rel, now, timeout = Duration(seconds=1.0)):
-            trans = self.tf_buffer.lookup_transform(
-                        to_frame_rel,
-                        from_frame_rel,
-                        now
-                        ,
-                        timeout = Duration(seconds=1.0))
-        except TransformException as ex:
-            self.get_logger().info(
-                f'Could not transform {to_frame_rel} to {from_frame_rel}: {ex}')
-            return
-        self.Xpos = int(np.rint((trans.transform.translation.x - msg.info.origin.position.x)/self.resolution))
-        self.Ypos = int(np.rint((trans.transform.translation.y - msg.info.origin.position.y)/self.resolution))
+        self.Xpos = int(np.rint((self.mapbase.x - msg.info.origin.position.x)/self.resolution))
+        self.Ypos = int(np.rint((self.mapbase.y - msg.info.origin.position.y)/self.resolution))
         self.mazelayout[self.Ypos][self.Xpos] = 6
-        self.XposNoAdjust = int(np.rint((trans.transform.translation.x + 5)/self.resolution))
-        self.YposNoAdjust = int(np.rint((trans.transform.translation.y + 5)/self.resolution))
+        # self.mazelayout[self.Ypos][self.Xpos - 5] = 10
+        self.XposNoAdjust = int(np.rint((self.mapbase.x + 5)/self.resolution))
+        self.YposNoAdjust = int(np.rint((self.mapbase.y + 5)/self.resolution))
         self.Xadjust = msg.info.origin.position.x
         self.Yadjust = msg.info.origin.position.y
-
         
         img2 = Image.fromarray(self.mazelayout)
         img = Image.fromarray(np.uint8(self.visitedarray.reshape(300,300)))
@@ -268,7 +246,7 @@ class AutoNav(Node):
         # reliably with this
         self.publisher_.publish(twist)
         twist.linear.x = 0.0
-        time.sleep(1.25)
+        time.sleep(1.15)
         self.publisher_.publish(twist)
 
 
@@ -287,29 +265,29 @@ class AutoNav(Node):
       for i in square:
         self.visitedarray[self.YposNoAdjust + i[1]][self.XposNoAdjust + i[0]] = 1
       if direction == 'down':
-        # if self.direction != 'down':
-        self.rotatebot(0)
-        print("going down")
-        self.robotforward()
-        self.direction = 'down'
+        if self.direction != 'down':
+          self.rotatebot(180)
+          self.robotforward()
+          print("going down")
+        
       if direction == 'right':
-        # if self.direction != 'right':
-        self.rotatebot(90)
-        print("going right")
-        self.robotforward()
-        self.direction = 'right'
+        if self.direction != 'right':
+          self.rotatebot(-90)
+          self.robotforward()
+          print("going right")
+        
       if direction == 'up':
-        # if self.direction != 'up':
-        self.rotatebot(180)
-        print("going up")
-        self.robotforward()
-        self.direction = 'up'
+        if self.direction != 'up':
+          self.rotatebot(0)
+          self.robotforward()
+          print("going up")
+        
       if direction == 'left':
-        # if self.direction != 'left':
-        self.rotatebot(-90)
-        print("going left")
-        self.robotforward()
-        self.direction = 'left'
+        if self.direction != 'left':
+          self.rotatebot(90)
+          self.robotforward()
+          print("going left")
+        
 
     def is_empty(self, direction):
       square = [[-2,2],[-1,2],[0,2],[1,2],[2,2],[-2,1],[-1,1],[0,1],[1,1],[2,1],[-2,0],[-1,0],[0,0],[1,0],[2,0],[-2,-1],[-1,-1],[0,-1],[1,-1],[2,-1],[-2,-2],[-1,-2],[0,-2],[1,-2],[2,-2]]
@@ -384,8 +362,8 @@ class AutoNav(Node):
         directions = [['up','down'],['right','left'],['down','up'],['left','right']]
         while self.phase1:
             needbacktrack = False
-            for b in range(100):
-                        rclpy.spin_once(self)
+            # for b in range(50):
+            rclpy.spin_once(self)
             for i in range(len(directions)):
                 # print("in directions")
                 if (not self.is_visited(directions[i][0])) and (self.is_empty(directions[i][0])):
@@ -408,8 +386,9 @@ class AutoNav(Node):
 
             # find direction with the largest distance from the Lidar,
             # rotate to that direction, and start moving
-            for i in range(100):
-                rclpy.spin_once(self)
+            sleep(1)
+            # for i in range(50):
+            rclpy.spin_once(self)
             while rclpy.ok():
               if self.phase1:
                 self.iterative_maze()
