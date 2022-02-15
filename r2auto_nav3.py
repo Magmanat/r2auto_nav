@@ -39,8 +39,8 @@ from tf2_ros.buffer import Buffer
 from tf2_ros.transform_listener import TransformListener 
 
 # constants
-rotatechange = 0.2
-speedchange = 0.25
+rotatechange = 0.15
+speedchange = 0.15
 occ_bins = [-1, 0, 50, 101]
 stop_distance = 0.25
 front_angle = 30
@@ -151,7 +151,7 @@ class AutoNav(Node):
 
 
     def occ_callback(self, msg):
-        print("map published")
+        # self.get_logger().info('In occ_callback')
         occdata = np.array(msg.data)
         # compute histogram to identify bins with -1, values between 0 and below 50, 
         # and values between 50 and 50. The binned_statistic function will also
@@ -171,16 +171,18 @@ class AutoNav(Node):
 
         from_frame_rel = self.target_frame
         to_frame_rel = 'map'
-    
+        now = rclpy.time.Time()
         trans = None
-        transchecker = None
         try:
-            now = rclpy.time.Time()
+            self.get_logger().info('Looking for transform')
+            
+            # while not self.tf_buffer.can_transform(to_frame_rel, from_frame_rel, now, timeout = Duration(seconds=1.0)):
             trans = self.tf_buffer.lookup_transform(
                         to_frame_rel,
                         from_frame_rel,
-                        now,
-                        timeout = Duration(seconds=1))
+                        now
+                        ,
+                        timeout = Duration(seconds=1.0))
         except TransformException as ex:
             self.get_logger().info(
                 f'Could not transform {to_frame_rel} to {from_frame_rel}: {ex}')
@@ -196,21 +198,10 @@ class AutoNav(Node):
         
         img2 = Image.fromarray(self.mazelayout)
         img = Image.fromarray(np.uint8(self.visitedarray.reshape(300,300)))
-        plt.imshow(img, cmap='gray', origin='lower')
+        plt.imshow(img2, cmap='gray', origin='lower')
         plt.draw_all()
         # # pause to make sure the plot gets created
         plt.pause(0.00000000001)
-
-
-    # def scan_callback(self, msg):
-    #     # self.get_logger().info('In scan_callback')
-    #     # create numpy array
-    #     self.laser_range = np.array(msg.ranges)
-    #     # print to file
-    #     # np.savetxt(scanfile, self.laser_range)
-    #     # replace 0's with nan
-    #     self.laser_range[self.laser_range==0] = np.nan
-
 
     # function to rotate the TurtleBot
     def rotatebot(self, rot_angle):
@@ -277,7 +268,7 @@ class AutoNav(Node):
         # reliably with this
         self.publisher_.publish(twist)
         twist.linear.x = 0.0
-        time.sleep(0.5)
+        time.sleep(1.25)
         self.publisher_.publish(twist)
 
 
@@ -291,8 +282,10 @@ class AutoNav(Node):
         self.publisher_.publish(twist)
 
     def move(self, direction):
+      square = [[-1,1],[0,1],[1,1],[-1,0],[0,0],[1,0],[-1,-1],[0,-1],[1,-1]]
       # self.visitedarraynoadjust.append([self.XposNoAdjust,self.YposNoAdjust])
-      self.visitedarray[self.YposNoAdjust][self.XposNoAdjust] = 1
+      for i in square:
+        self.visitedarray[self.YposNoAdjust + i[1]][self.XposNoAdjust + i[0]] = 1
       if direction == 'down':
         # if self.direction != 'down':
         self.rotatebot(180)
@@ -322,22 +315,22 @@ class AutoNav(Node):
       square = [[-2,2],[-1,2],[0,2],[1,2],[2,2],[-2,1],[-1,1],[0,1],[1,1],[2,1],[-2,0],[-1,0],[0,0],[1,0],[2,0],[-2,-1],[-1,-1],[0,-1],[1,-1],[2,-1],[-2,-2],[-1,-2],[0,-2],[1,-2],[2,-2]]
       if direction == 'right':
         for i in square:
-          if self.mazelayout[self.Ypos - 3 + i[1]][self.Xpos + i[0]] == 3:
+          if self.mazelayout[self.Ypos - 5 + i[1]][self.Xpos + i[0]] == 3:
             print("right obstacle")
             return False
       elif direction == 'up':
         for i in square:
-          if self.mazelayout[self.Ypos + i[1]][self.Xpos + 3 + i[0]] == 3:
+          if self.mazelayout[self.Ypos + i[1]][self.Xpos + 5 + i[0]] == 3:
             print("up obstacle")
             return False
       elif direction == 'left':
         for i in square:
-          if self.mazelayout[self.Ypos + 3 + i[1]][self.Xpos + i[0]] == 3:
+          if self.mazelayout[self.Ypos + 5 + i[1]][self.Xpos + i[0]] == 3:
             print("left obstacle")
             return False
       elif direction == 'down':
         for i in square:
-          if self.mazelayout[self.Ypos+ i[1]][self.Xpos - 3 + i[0]] == 3:
+          if self.mazelayout[self.Ypos+ i[1]][self.Xpos - 5 + i[0]] == 3:
             print("down obstacle")
             return False
       print(direction + " not obstacle")
@@ -357,25 +350,25 @@ class AutoNav(Node):
       if direction == 'right':
         for i in square:
           # print(self.visitedarray[self.YposNoAdjust - 3 + i[1]][self.XposNoAdjust + i[0]])
-          if self.visitedarray[self.YposNoAdjust - 3 + i[1]][self.XposNoAdjust + i[0]] == 1:
+          if self.visitedarray[self.YposNoAdjust - 5 + i[1]][self.XposNoAdjust + i[0]] == 1:
             print("right visited")
             return True
       elif direction == 'up':
         for i in square:
           # print(self.visitedarray[self.YposNoAdjust + i[1]][self.XposNoAdjust + 3 + i[0]])
-          if self.visitedarray[self.YposNoAdjust + i[1]][self.XposNoAdjust + 3 + i[0]] == 1:
+          if self.visitedarray[self.YposNoAdjust + i[1]][self.XposNoAdjust + 5 + i[0]] == 1:
             print("up visited")
             return True
       elif direction == 'left':
         for i in square:
           # print(self.visitedarray[self.YposNoAdjust + 3 + i[1]][self.XposNoAdjust + i[0]])
-          if self.visitedarray[self.YposNoAdjust + 3 + i[1]][self.XposNoAdjust + i[0]] == 1:
+          if self.visitedarray[self.YposNoAdjust + 5 + i[1]][self.XposNoAdjust + i[0]] == 1:
             print("left visited")
             return True
       elif direction == 'down':
         for i in square:
           # print(self.visitedarray[self.YposNoAdjust+ i[1]][self.XposNoAdjust - 3 + i[0]]) 
-          if self.visitedarray[self.YposNoAdjust+ i[1]][self.XposNoAdjust - 3 + i[0]] == 1:
+          if self.visitedarray[self.YposNoAdjust+ i[1]][self.XposNoAdjust - 5 + i[0]] == 1:
             print("down visited")
             return True
       print(direction + " not visited")
