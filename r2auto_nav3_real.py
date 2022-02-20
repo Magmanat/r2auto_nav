@@ -39,8 +39,8 @@ from tf2_ros.buffer import Buffer
 from tf2_ros.transform_listener import TransformListener 
 
 # constants
-rotatechange = 0.15
-speedchange = 0.15
+rotatechange = 0.3
+speedchange = 0.1
 occ_bins = [-1, 0, 50, 101]
 stop_distance = 0.25
 front_angle = 30
@@ -176,7 +176,7 @@ class AutoNav(Node):
         
         img2 = Image.fromarray(self.mazelayout)
         img = Image.fromarray(np.uint8(self.visitedarray.reshape(300,300)))
-        plt.imshow(img2, cmap='gray', origin='lower')
+        plt.imshow(img, cmap='gray', origin='lower')
         plt.draw_all()
         # # pause to make sure the plot gets created
         plt.pause(0.00000000001)
@@ -246,7 +246,7 @@ class AutoNav(Node):
         # reliably with this
         self.publisher_.publish(twist)
         twist.linear.x = 0.0
-        time.sleep(1.15)
+        time.sleep(1.5)
         self.publisher_.publish(twist)
 
 
@@ -290,34 +290,34 @@ class AutoNav(Node):
         
 
     def is_empty(self, direction):
-      square = [[-2,2],[-1,2],[0,2],[1,2],[2,2],[-2,1],[-1,1],[0,1],[1,1],[2,1],[-2,0],[-1,0],[0,0],[1,0],[2,0],[-2,-1],[-1,-1],[0,-1],[1,-1],[2,-1],[-2,-2],[-1,-2],[0,-2],[1,-2],[2,-2]]
+      # square = [[-2,2],[-1,2],[0,2],[1,2],[2,2],[-2,1],[-1,1],[0,1],[1,1],[2,1],[-2,0],[-1,0],[0,0],[1,0],[2,0],[-2,-1],[-1,-1],[0,-1],[1,-1],[2,-1],[-2,-2],[-1,-2],[0,-2],[1,-2],[2,-2]]
+      square = [[-1,1],[0,1],[1,1],[-1,0],[0,0],[1,0],[-1,-1],[0,-1],[1,-1]]
       if direction == 'right':
         for i in square:
-          if self.mazelayout[self.Ypos - 5 + i[1]][self.Xpos + i[0]] == 3:
+          if self.mazelayout[self.Ypos - 4 + i[1]][self.Xpos + i[0]] == 3:
             print("right obstacle")
             return False
       elif direction == 'up':
         for i in square:
-          if self.mazelayout[self.Ypos + i[1]][self.Xpos + 5 + i[0]] == 3:
+          if self.mazelayout[self.Ypos + i[1]][self.Xpos + 4 + i[0]] == 3:
             print("up obstacle")
             return False
       elif direction == 'left':
         for i in square:
-          if self.mazelayout[self.Ypos + 5 + i[1]][self.Xpos + i[0]] == 3:
+          if self.mazelayout[self.Ypos + 4 + i[1]][self.Xpos + i[0]] == 3:
             print("left obstacle")
             return False
       elif direction == 'down':
         for i in square:
-          if self.mazelayout[self.Ypos+ i[1]][self.Xpos - 5 + i[0]] == 3:
+          if self.mazelayout[self.Ypos+ i[1]][self.Xpos - 4 + i[0]] == 3:
             print("down obstacle")
             return False
       print(direction + " not obstacle")
       return True
 
     def is_visited(self, direction):
-      square = [[-2,2],[-1,2],[0,2],[1,2],[2,2],[-2,1],[-1,1],[0,1],[1,1],[2,1],[-2,0],[-1,0],[0,0],[1,0],[2,0],[-2,-1],[-1,-1],[0,-1],[1,-1],[2,-1],[-2,-2],[-1,-2],[0,-2],[1,-2],[2,-2]]
-      # for i in self.visitedarraynoadjust:
-      #   self.visitedarray.append([int(np.rint(((i[0] - self.Xadjust/self.resolution)))),int(np.rint(((i[1] - self.Yadjust)/self.resolution)))])
+      # square = [[-2,2],[-1,2],[0,2],[1,2],[2,2],[-2,1],[-1,1],[0,1],[1,1],[2,1],[-2,0],[-1,0],[0,0],[1,0],[2,0],[-2,-1],[-1,-1],[0,-1],[1,-1],[2,-1],[-2,-2],[-1,-2],[0,-2],[1,-2],[2,-2]]
+      square = [[-1,1],[0,1],[1,1],[-1,0],[0,0],[1,0],[-1,-1],[0,-1],[1,-1]]
       print("in visited")
       print("X pos: " + str(self.Xpos))
       print("Y pos: " + str(self.Ypos))
@@ -328,25 +328,25 @@ class AutoNav(Node):
       if direction == 'right':
         for i in square:
           # print(self.visitedarray[self.YposNoAdjust - 3 + i[1]][self.XposNoAdjust + i[0]])
-          if self.visitedarray[self.YposNoAdjust - 5 + i[1]][self.XposNoAdjust + i[0]] == 1:
+          if self.visitedarray[self.YposNoAdjust - 4 + i[1]][self.XposNoAdjust + i[0]] == 1:
             print("right visited")
             return True
       elif direction == 'up':
         for i in square:
           # print(self.visitedarray[self.YposNoAdjust + i[1]][self.XposNoAdjust + 3 + i[0]])
-          if self.visitedarray[self.YposNoAdjust + i[1]][self.XposNoAdjust + 5 + i[0]] == 1:
+          if self.visitedarray[self.YposNoAdjust + i[1]][self.XposNoAdjust + 4 + i[0]] == 1:
             print("up visited")
             return True
       elif direction == 'left':
         for i in square:
           # print(self.visitedarray[self.YposNoAdjust + 3 + i[1]][self.XposNoAdjust + i[0]])
-          if self.visitedarray[self.YposNoAdjust + 5 + i[1]][self.XposNoAdjust + i[0]] == 1:
+          if self.visitedarray[self.YposNoAdjust + 4 + i[1]][self.XposNoAdjust + i[0]] == 1:
             print("left visited")
             return True
       elif direction == 'down':
         for i in square:
           # print(self.visitedarray[self.YposNoAdjust+ i[1]][self.XposNoAdjust - 3 + i[0]]) 
-          if self.visitedarray[self.YposNoAdjust+ i[1]][self.XposNoAdjust - 5 + i[0]] == 1:
+          if self.visitedarray[self.YposNoAdjust+ i[1]][self.XposNoAdjust - 4 + i[0]] == 1:
             print("down visited")
             return True
       print(direction + " not visited")
