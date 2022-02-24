@@ -34,9 +34,10 @@ class Targeter(Node):
         self.subscription  # prevent unused variable warning
 
         #some data
-        self.thermal_array = []
+        self.thermal_array = [0 for i in range(64)]
         self.target_presence = False
         self.front_distance = -1
+
 
 #function to  store array data in self.thermal_array
     def thermal_callback(self, thermal_array):

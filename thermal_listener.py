@@ -29,7 +29,7 @@ class ThermalListener(Node):
         self.fig,self.ax = plt.subplots(figsize=self.fig_dims) # start figure
         self.pix_res = (8,8) # pixel resolution
         self.zz = np.zeros(self.pix_res) # set array with zeros first
-        self.im1 = self.ax.imshow(self.zz,vmin=15,vmax=40) # plot image, with temperature bounds
+        self.im1 = self.ax.imshow(self.zz,vmin=25,vmax=35) # plot image, with temperature bounds
         self.cbar = self.fig.colorbar(self.im1,fraction=0.0475,pad=0.03) # colorbar
         self.cbar.set_label('Temperature [C]',labelpad=10) # temp. label
         self.fig.canvas.draw() # draw figure
