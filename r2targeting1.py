@@ -40,8 +40,10 @@ class Targeter(Node):
 
 #function to  store array data in self.thermal_array
     def thermal_callback(self, thermal_array):
+        pix_res = (8,8)
         self.get_logger().info('I heard: "%s"' % thermal_array.data)
-        self.thermal_array = thermal_array.data
+        self.thermal_array = np.reshape(thermal_array.data,pix_res)
+        print(self.thermal_array)
 
 #function to stop bot
     def stopbot(self):
