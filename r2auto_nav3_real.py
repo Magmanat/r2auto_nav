@@ -85,7 +85,7 @@ class AutoNav(Node):
             Pose,
             'map2base',
             self.map2base_callback,
-            10)
+            1)
         # self.get_logger().info('Created subscriber')
         # initialize variables
         self.roll = 0
@@ -97,7 +97,7 @@ class AutoNav(Node):
             OccupancyGrid,
             'map',
             self.occ_callback,
-            10)
+            1)
         self.occ_subscription  # prevent unused variable warning
 
         self.mapbase = None
@@ -173,7 +173,6 @@ class AutoNav(Node):
         self.YposNoAdjust = int(np.rint((self.mapbase.y + 5)/self.resolution))
         self.Xadjust = msg.info.origin.position.x
         self.Yadjust = msg.info.origin.position.y
-        
         img2 = Image.fromarray(self.mazelayout)
         img = Image.fromarray(np.uint8(self.visitedarray.reshape(300,300)))
         plt.imshow(img, cmap='gray', origin='lower')
