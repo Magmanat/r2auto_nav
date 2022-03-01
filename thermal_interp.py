@@ -6,6 +6,7 @@ from std_msgs.msg import Float32MultiArray, Float64MultiArray
 import numpy as np
 import time
 import matplotlib.pyplot as plt
+from matplotlib import cm
 from scipy import interpolate
 
 class ThermalListener(Node):
@@ -22,6 +23,7 @@ class ThermalListener(Node):
 
         #some data
         self.thermal_array = [0 for i in range(64)]
+
         # original resolution
         self.pix_res = (8,8) # pixel resolution
         self.xx,self.yy = (np.linspace(0,self.pix_res[0],self.pix_res[0]),
@@ -40,7 +42,7 @@ class ThermalListener(Node):
         plt.rcParams.update({'font.size':16})
         self.fig_dims = (12,9) # figure size
         self.fig,self.ax = plt.subplots(figsize=self.fig_dims) # start figure
-        self.im1 = self.ax.imshow(self.grid_z,vmin=25,vmax=35) # plot image, with temperature bounds
+        self.im1 = self.ax.imshow(self.grid_z,vmin=25,vmax=35,cmap=cm.magma) # plot image, with temperature bounds
         self.cbar = self.fig.colorbar(self.im1,fraction=0.0475,pad=0.03) # colorbar
         self.cbar.set_label('Temperature [C]',labelpad=10) # temp. label
         self.fig.canvas.draw() # draw figure

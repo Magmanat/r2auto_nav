@@ -70,7 +70,7 @@ class ThermalListener(Node):
     #     # Plot AMG8833 temps in real-time
     #     #####################################
     #     #
-    #     pix_to_read = 64 # read all 64 pixels
+    #     pix_t_read = 64 # read all 64 pixels
     #     while True:
     #         fig.canvas.restore_region(ax_bgnd) # restore background (speeds up run)
     #         im1.set_data(np.reshape(array,pix_res)) # update plot with new temps
