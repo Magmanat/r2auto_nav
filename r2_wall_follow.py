@@ -14,12 +14,15 @@
 
 import rclpy
 from rclpy.node import Node
-from nav_msgs.msg import Odometry
+from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Twist
 from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import OccupancyGrid
 from std_msgs.msg import Bool
+from PIL import Image
+import scipy.stats
+import matplotlib.pyplot as plt
 from time import sleep
 import numpy as np
 import math
@@ -29,7 +32,7 @@ import time
 # constants
 rotatechange = 0.1
 speedchange = 0.05
-occ_bins = [-1, 0, 100, 101]
+occ_bins = [-1, 0, 50, 101]
 stop_distance = 0.25
 front_angle = 30
 front_angles = range(-front_angle,front_angle+1,1)
@@ -68,25 +71,23 @@ class AutoNav(Node):
         # self.get_logger().info('Created publisher')
         
         # create subscription to track orientation
-        self.odom_subscription = self.create_subscription(
-            Odometry,
-            'odom',
-            self.odom_callback,
-            10)
-        # self.get_logger().info('Created subscriber')
-        self.odom_subscription  # prevent unused variable warning
-        # initialize variables
+        self.map2base_sub = self.create_subscription(
+            Pose,
+            'map2base',
+            self.map2base_callback,
+            1)
+
         self.roll = 0
         self.pitch = 0
         self.yaw = 0
         
         # create subscription to track occupancy
-        self.occ_subscription = self.create_subscription(
-            OccupancyGrid,
-            'map',
-            self.occ_callback,
-            qos_profile_sensor_data)
-        self.occ_subscription  # prevent unused variable warning
+        # self.occ_subscription = self.create_subscription(
+        #     OccupancyGrid,
+        #     'map',
+        #     self.occ_callback,
+        #     1)
+        # self.occ_subscription  # prevent unused variable warning
         self.occdata = np.array([])
         
         # create subscription to track lidar
@@ -94,7 +95,7 @@ class AutoNav(Node):
             LaserScan,
             'scan',
             self.scan_callback,
-            qos_profile_sensor_data)
+            1)
         self.scan_subscription  # prevent unused variable warning
         self.laser_range = np.array([])
 
@@ -102,57 +103,57 @@ class AutoNav(Node):
         'NFC_presence',
         self.NFC_callback,
         10)
-        self.mything = True
-
-    def spinAround(self):
-        twist = Twist()
-        try:
-            twist.linear.x = 0.0
-            twist.angular.z = 1.0
-            # check which key was entered
-            # start the movement
-            self.publisher_.publish(twist)
-            sleep(3.14/1)
-                
-        except Exception as e:
-            print(e)
-            
-		# Ctrl-c detected
-        finally:
-        	# stop moving
-            twist.linear.x = 0.0
-            twist.angular.z = 0.0
-            self.publisher_.publish(twist)
+        self.resolution = 0.05
+        self.nfc_presence = False
+        self.Xpos = 0
+        self.Ypos = 0
+        self.XposNoAdjust = 0
+        self.YposNoAdjust = 0
+        self.mapbase = 0
+        self.mazelayout = []
 
     def NFC_callback(self,msg):
         if msg.data == True:
-            self.mything = False
-        print(msg.data)
+            self.nfc_presence = True
+        else:
+            self.nfc_presence = False
 
-    def odom_callback(self, msg):
-        # self.get_logger().info('In odom_callback')
-        orientation_quat =  msg.pose.pose.orientation
-        self.roll, self.pitch, self.yaw = euler_from_quaternion(orientation_quat.x, orientation_quat.y, orientation_quat.z, orientation_quat.w)
+    def map2base_callback(self, msg):
+        # self.get_logger().info('In map2basecallback')
+        
+        self.mapbase = msg.position
+        self.roll, self.pitch, self.yaw = euler_from_quaternion(msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w)
 
 
-    def occ_callback(self, msg):
-        # self.get_logger().info('In occ_callback')
-        # create numpy array
-        msgdata = np.array(msg.data)
-        # compute histogram to identify percent of bins with -1
-        # occ_counts = np.histogram(msgdata,occ_bins)
-        # calculate total number of bins
-        # total_bins = msg.info.width * msg.info.height
-        # log the info
-        # self.get_logger().info('Unmapped: %i Unoccupied: %i Occupied: %i Total: %i' % (occ_counts[0][0], occ_counts[0][1], occ_counts[0][2], total_bins))
+    # def occ_callback(self, msg):
+    #     # self.get_logger().info('In occ_callback')
+    #     occdata = np.array(msg.data)
+    #     # compute histogram to identify bins with -1, values between 0 and below 50, 
+    #     # and values between 50 and 50. The binned_statistic function will also
+    #     # return the bin numbers so we can use that easily to create the image 
+    #     occ_counts, edges, binnum = scipy.stats.binned_statistic(occdata, np.nan, statistic='count', bins=occ_bins)
+    #     # get width and height of map
+    #     iwidth = msg.info.width
+    #     iheight = msg.info.height
+    #     # calculate total number of bins
+    #     total_bins = iwidth * iheight
+    #     # log the info
+    #     # self.get_logger().info('Unmapped: %i Unoccupied: %i Occupied: %i Total: %i' % (occ_counts[0], occ_counts[1], occ_counts[2], total_bins))
 
-        # make msgdata go from 0 instead of -1, reshape into 2D
-        oc2 = msgdata + 1
-        # reshape to 2D array using column order
-        # self.occdata = np.uint8(oc2.reshape(msg.info.height,msg.info.width,order='F'))
-        self.occdata = np.uint8(oc2.reshape(msg.info.height,msg.info.width))
-        # print to file
-        # np.savetxt(mapfile, self.occdata)
+    #     # binnum go from 1 to 3 so we can use uint8
+    #     # convert into 2D array using column order
+    #     self.mazelayout = np.uint8(binnum.reshape(msg.info.height,msg.info.width))
+
+    #     self.Xpos = int(np.rint((self.mapbase.x - msg.info.origin.position.x)/self.resolution))
+    #     self.Ypos = int(np.rint((self.mapbase.y - msg.info.origin.position.y)/self.resolution))
+    #     self.mazelayout[self.Ypos][self.Xpos] = 6
+    #     self.Xadjust = msg.info.origin.position.x
+    #     self.Yadjust = msg.info.origin.position.y
+    #     img2 = Image.fromarray(self.mazelayout)
+    #     plt.imshow(img2, cmap='gray', origin='lower')
+    #     plt.draw_all()
+    #     # # pause to make sure the plot gets created
+    #     plt.pause(0.00000000001)
 
 
     def scan_callback(self, msg):
@@ -179,7 +180,7 @@ class AutoNav(Node):
         # 360 to 0, or from -180 to 180
         c_yaw = complex(math.cos(current_yaw),math.sin(current_yaw))
         # calculate desired yaw
-        target_yaw = current_yaw + math.radians(rot_angle)
+        target_yaw = math.radians(rot_angle)
         # convert to complex notation
         c_target_yaw = complex(math.cos(target_yaw),math.sin(target_yaw))
         self.get_logger().info('Desired: %f' % math.degrees(cmath.phase(c_target_yaw)))
@@ -199,7 +200,7 @@ class AutoNav(Node):
         # self.get_logger().info('c_change_dir: %f c_dir_diff: %f' % (c_change_dir, c_dir_diff))
         # if the rotation direction was 1.0, then we will want to stop when the c_dir_diff
         # becomes -1.0, and vice versa
-        while(c_change_dir * c_dir_diff > 0) and self.mything:
+        while(c_change_dir * c_dir_diff > 0):
             # allow the callback functions to run
             rclpy.spin_once(self)
             current_yaw = self.yaw
@@ -218,29 +219,87 @@ class AutoNav(Node):
         # stop the rotation
         self.publisher_.publish(twist)
 
-
     def pick_direction(self):
-        # self.get_logger().info('In pick_direction')
-        if self.laser_range.size != 0:
-            # use nanargmax as there are nan's in laser_range added to replace 0's
-            lr2i = np.nanargmax(self.laser_range)
-            self.get_logger().info('Picked direction: %d %f m' % (lr2i, self.laser_range[lr2i]))
+        self.get_logger().info('In pick direction:')
+        
+        self.front_dist = np.nan_to_num(
+            self.laser_range[0], copy=False, nan=100)
+        self.leftfront_dist = np.nan_to_num(
+            self.laser_range[45], copy=False, nan=100)
+        self.rightfront_dist = np.nan_to_num(
+            self.laser_range[315], copy=False, nan=100)
+
+        self.get_logger().info('Front Distance: %s' % str(self.front_dist))
+        self.get_logger().info('Front Left Distance: %s' % str(self.leftfront_dist))
+        self.get_logger().info('Front Right Distance: %s' % str(self.rightfront_dist))
+
+        # Logic for following the wall
+        # >d means no wall detected by that laser beam
+        # <d means a wall was detected by that laser beam
+        d = 0.28  # wall distance from the robot. It will follow the right wall and maintain this distance
+        # Set turning speeds (to the left) in rad/s
+
+        # These values were determined by trial and error.
+        self.turning_speed_wf_fast = 0.75  # Fast turn ideal = 1.0
+        self.turning_speed_wf_slow = 0.40  # Slow turn = 0.50
+        # Set movement speed
+        self.forward_speed = speedchange
+        # Set up twist message as msg
+        msg = Twist()
+        msg.linear.x = 0.0
+        msg.linear.y = 0.0
+        msg.linear.z = 0.0
+        msg.angular.x = 0.0
+        msg.angular.y = 0.0
+        msg.angular.z = 0.0
+
+        if self.leftfront_dist > d and self.front_dist > d and self.rightfront_dist > d:
+            self.wall_following_state = "search for wall"
+            msg.linear.x = self.forward_speed
+            msg.angular.z = self.turning_speed_wf_slow  # turn left to find wall
+
+        elif self.leftfront_dist > d and self.front_dist < d and self.rightfront_dist > d:
+            self.wall_following_state = "turn right"
+            msg.angular.z = -self.turning_speed_wf_fast
+
+        elif (self.leftfront_dist < d and self.front_dist > d and self.rightfront_dist > d):
+            if (self.leftfront_dist < 0.25):
+                # Getting too close to the wall
+                self.wall_following_state = "turn right"
+                msg.linear.x = self.forward_speed
+                msg.angular.z = -self.turning_speed_wf_fast
+            else:
+                # Go straight ahead
+                self.wall_following_state = "follow wall"
+                msg.linear.x = self.forward_speed
+
+        elif self.leftfront_dist > d and self.front_dist > d and self.rightfront_dist < d:
+            self.wall_following_state = "search for wall"
+            msg.linear.x = self.forward_speed
+            msg.angular.z = self.turning_speed_wf_slow  # turn left to find wall
+
+        elif self.leftfront_dist < d and self.front_dist < d and self.rightfront_dist > d:
+            self.wall_following_state = "turn right"
+            msg.angular.z = -self.turning_speed_wf_fast
+
+        elif self.leftfront_dist > d and self.front_dist < d and self.rightfront_dist < d:
+            self.wall_following_state = "turn right"
+            msg.angular.z = -self.turning_speed_wf_fast
+
+        elif self.leftfront_dist < d and self.front_dist < d and self.rightfront_dist < d:
+            self.wall_following_state = "turn right"
+            msg.angular.z = -self.turning_speed_wf_fast
+
+        elif self.leftfront_dist < d and self.front_dist > d and self.rightfront_dist < d:
+            self.wall_following_state = "search for wall"
+            msg.linear.x = self.forward_speed
+            msg.angular.z = self.turning_speed_wf_slow  # turn left to find wall
+
         else:
-            lr2i = 0
-            self.get_logger().info('No data!')
+            pass
 
-        # rotate to that direction
-        self.rotatebot(float(lr2i))
-
-        # start moving
-        self.get_logger().info('Start moving')
-        twist = Twist()
-        twist.linear.x = speedchange
-        twist.angular.z = 0.0
-        # not sure if this is really necessary, but things seem to work more
-        # reliably with this
-        time.sleep(1)
-        self.publisher_.publish(twist)
+        # Send velocity command to the robot
+        self.publisher_.publish(msg)
 
 
     def stopbot(self):
@@ -258,32 +317,12 @@ class AutoNav(Node):
             # initialize variable to write elapsed time to file
             # contourCheck = 1
 
-            # find direction with the largest distance from the Lidar,
-            # rotate to that direction, and start moving
-            self.pick_direction()
-
+            while (self.laser_range.size == 0):
+                print("Spin to get a valid lidar data")
+                rclpy.spin_once(self)
+              
             while rclpy.ok():
-                if self.laser_range.size != 0:
-                    # check distances in front of TurtleBot and find values less
-                    # than stop_distance
-                    lri = (self.laser_range[front_angles]<float(stop_distance)).nonzero()
-                    # self.get_logger().info('Distances: %s' % str(lri))
-
-                    # if the list is not empty
-                    if(len(lri[0])>0):
-                        # stop moving
-                        self.stopbot()
-                        # find direction with the largest distance from the Lidar
-                        # rotate to that direction
-                        # start moving
-                        self.pick_direction()
-                    
-                    if self.mything == False:
-                        self.stopbot()
-                        self.spinAround()
-                        self.destroy_node()
-                        rclpy.shutdown()
-
+                self.pick_direction()
                 # allow the callback functions to run
                 rclpy.spin_once(self)
 
