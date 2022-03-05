@@ -175,7 +175,7 @@ class AutoNav(Node):
         self.Yadjust = msg.info.origin.position.y
         img2 = Image.fromarray(self.mazelayout)
         img = Image.fromarray(np.uint8(self.visitedarray.reshape(300,300)))
-        plt.imshow(img, cmap='gray', origin='lower')
+        plt.imshow(img2, cmap='gray', origin='lower')
         plt.draw_all()
         # # pause to make sure the plot gets created
         plt.pause(0.00000000001)

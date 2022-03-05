@@ -1,6 +1,8 @@
+from cmath import inf
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
+from sensor_msgs.msg import LaserScan
 from rclpy.qos import qos_profile_sensor_data
 from std_msgs.msg import Float32MultiArray, Float64MultiArray
 import numpy as np
@@ -10,7 +12,7 @@ import time
 #Implement front distance
 #Implement firing sequence
 #integrate Prince's Navigation
-#Test with bot
+
 
 #Please run "sudo chmod a+rw /dev/i2c-1" on bash console if permission denied error on thermal_publisher
 
@@ -20,9 +22,9 @@ and forward'''
 #variable
 speedchange = 0.05
 rotatechange = 0.1
-hot_threshold = 32.0
+hot_threshold = 30.0
 shoot_distance = 30.0
-
+move_res = 1.5 #time for sleep when moving
 
 
 class Targeter(Node):
@@ -38,6 +40,13 @@ class Targeter(Node):
             'thermal',
             self.thermal_callback,
             10)
+
+        self.lasersub = self.create_subscription(
+            LaserScan,
+            'scan',
+            self.laser_callback,
+            qos_profile_sensor_data)
+
         self.subscription  # prevent unused variable warning
 
         #some data
@@ -61,7 +70,10 @@ class Targeter(Node):
             self.stopbot()
             print("Target Detected, Stop Bot")
             self.center_target()
-            if self.front_distance > shoot_distance and self.centered == True:
+            if self.front_distance <= shoot_distance:
+                print("moving onto shooting phase")
+                #stop this script and move onto shooting script
+            if self.centered == True:
                 self.robotforward()
         else:
             print("Target Not Detected")
@@ -88,9 +100,22 @@ class Targeter(Node):
         # reliably with this
         self.publisher_.publish(twist)
         twist.linear.x = 0.0
-        time.sleep(1.5)
+        time.sleep(move_res)
         self.publisher_.publish(twist)
 
+    def laser_callback(self, msg):
+        # create numpy array
+        laser_range = list(msg.ranges)
+        # find index with minimum value
+        front_ranges = laser_range[-5 : 0] + laser_range[0 : 5]
+        front_ranges_filtered = []
+        for i in front_ranges:
+            if i == inf:
+                continue
+            front_ranges_filtered.append(i)
+        if front_ranges_filtered == []:
+            front_ranges_filtered = [2]
+        self.front_distance = np.average(front_ranges_filtered)
 
     #function that checks through array if there is anything hot
     def detect_target(self):
@@ -126,10 +151,9 @@ class Targeter(Node):
                 twist = Twist()
                 twist.linear.x = 0.0
                 twist.angular.z = rotatechange
-                time.sleep(1)
                 self.publisher_.publish(twist)
                 twist.angular.z = 0.0
-                time.sleep(1.5)
+                time.sleep(move_res)
                 self.publisher_.publish(twist)
                 self.centered = False
         elif max_col > 4:
@@ -138,10 +162,9 @@ class Targeter(Node):
                 twist = Twist()
                 twist.linear.x = 0.0
                 twist.angular.z = -rotatechange
-                time.sleep(1)
                 self.publisher_.publish(twist)
                 twist.angular.z = 0.0
-                time.sleep(1.5)
+                time.sleep(move_res)
                 self.publisher_.publish(twist)
                 self.centered = False
         else:
