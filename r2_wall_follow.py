@@ -30,8 +30,16 @@ import cmath
 import time
 
 # constants
+
+TARGETspeedchange = 0.05
+TARGETrotatechange = 0.1
+TARGET_hotthreshhold = 30.0
+TARGETshoot_distance = 0.30
+TARGET_front_angle = 3
+TARGET_front_angles = range(-TARGET_front_angle,TARGET_front_angle,1)
+TARGET_moveres = 0.2 #time for sleep when moving
+
 rotatechange = 0.1
-speedchange = 0.05
 occ_bins = [-1, 0, 50, 101]
 stop_distance = 0.25
 initialdelay = 5
@@ -62,6 +70,158 @@ def euler_from_quaternion(x, y, z, w):
 
     return roll_x, pitch_y, yaw_z # in radians
 
+class Targeter(Node):
+    def __init__(self):
+        super().__init__('targeter')
+
+        # create publisher for moving TurtleBot
+        self.publisher_ = self.create_publisher(Twist,'cmd_vel',10)
+
+        #create subscription to thermal cam array data
+        self.subscription = self.create_subscription(
+            Float64MultiArray,
+            'thermal',
+            self.thermal_callback,
+            10)
+
+        self.lasersub = self.create_subscription(
+            LaserScan,
+            'scan',
+            self.laser_callback,
+            qos_profile_sensor_data)
+
+        self.subscription  # prevent unused variable warning
+
+        #some data
+        self.thermal_array = [0 for i in range(64)]
+        self.target_presence = False
+        self.front_distance = 100
+        self.centered = False
+
+
+#function to get thermal arrray data
+#check for hot_target
+#check centered if not move 1 step to center
+#if centered move 1 step forward
+    def thermal_callback(self, thermal_array):
+        pix_res = (8,8)
+        self.get_logger().info('I heard: "%s"' % thermal_array.data)
+        self.thermal_array = np.reshape(thermal_array.data,pix_res)
+        print(self.thermal_array)
+        self.detect_target()
+        if self.target_presence == True:
+            self.stopbot()
+            print("Target Detected, Stop Bot")
+            self.center_target()
+            if (self.front_distance < TARGETshoot_distance):
+                if self.centered == False:
+                    self.center_target()
+                else:
+                    self.stopbot()
+                    print("moving onto shooting phase")
+                    self.destroy_node(self)
+            if self.centered == True and self.front_distance > TARGETshoot_distance:
+                    #stop this script and move onto shooting script
+                self.robotforward()
+        else:
+            print("Target Not Detected")
+            #return to autonav?
+            #thinking of doing a publisher for thermal detection
+            pass
+
+
+    #function to stop bot
+    def stopbot(self):
+        twist = Twist()
+        twist.linear.x = 0.0
+        twist.angular.z = 0.0
+        self.publisher_.publish(twist) 
+
+    #funtion that moves bot forward by 1 step according TARGETspeedchange variable and sleep time
+    def robotforward(self):
+        # start moving
+        self.get_logger().info('1 step forward')
+        twist = Twist()
+        twist.linear.x = TARGETspeedchange
+        twist.angular.z = 0.0
+        # not sure if this is really necessary, but things seem to work more
+        # reliably with this
+        self.publisher_.publish(twist)
+        twist.linear.x = 0.0
+        time.sleep(TARGET_moveres)
+        self.publisher_.publish(twist)
+
+    def laser_callback(self, msg):
+        # create numpy array
+        laser_range = list(msg.ranges)
+        # find index with minimum value
+        laser_range = laser_range[-TARGET_front_angle:] + laser_range[:TARGET_front_angle + 1]
+        print(laser_range)
+        laser_range_new = []
+        for i in laser_range:
+            if i == np.nan or i == np.inf or i == 0:
+                continue
+            laser_range_new.append(i)
+        self.front_distance = np.average(laser_range_new)
+        print("This is the front distance")
+        print(self.front_distance)
+
+    #function that checks through array if there is anything hot
+    def detect_target(self):
+        max_value = -1.0
+        for row in range(len(self.thermal_array)):
+            for col in range(len(self.thermal_array[row])):
+                current_value = self.thermal_array[row][col]
+                if current_value > max_value:
+                    max_row = row
+                    max_col = col
+                    max_value = current_value
+        print("max temp = %s @ %s" %(max_value,max_col))
+        if max_value >= TARGET_hotthreshhold:     
+            self.target_presence = True
+        else:
+            self.target_presence = False
+
+#function checks for hottest region and sends command to rotate by 1 step
+    def center_target(self):
+        view = self.thermal_array
+        max_value = -1.0
+        for row in range(len(self.thermal_array)):
+            for col in range(len(self.thermal_array[row])):
+                current_value = view[row][col]
+                if current_value > max_value:
+                    max_row = row
+                    max_col = col
+                    max_value = current_value
+        print("max temp = %s @ %s" %(max_value,max_col))
+        if max_col < 3:
+                # turn 1 step anti-clockwise
+                print("Not centered, 1 step ACW")
+                twist = Twist()
+                twist.linear.x = 0.0
+                twist.angular.z = TARGETrotatechange
+                self.publisher_.publish(twist)
+                twist.angular.z = 0.0
+                time.sleep(TARGET_moveres)
+                self.publisher_.publish(twist)
+                self.centered = False
+        elif max_col > 4:
+                # turn 1 step clockwise
+                print("Not centered, 1 step CW")
+                twist = Twist()
+                twist.linear.x = 0.0
+                twist.angular.z = -TARGETrotatechange
+                self.publisher_.publish(twist)
+                twist.angular.z = 0.0
+                time.sleep(TARGET_moveres)
+                self.publisher_.publish(twist)
+                self.centered = False
+        else:
+            print("Centered and stopped")
+            self.stopbot
+            self.centered = True
+
+
 class AutoNav(Node):
 
     def __init__(self):
@@ -77,6 +237,12 @@ class AutoNav(Node):
             'map2base',
             self.map2base_callback,
             1)
+
+        self.subscription = self.create_subscription(
+            Float64MultiArray,
+            'thermal',
+            self.thermal_callback,
+            10)
 
         self.roll = 0
         self.pitch = 0
@@ -537,7 +703,7 @@ class AutoNav(Node):
 
                 if self.loaded == False and self.nfc_presence == True:
                   self.loading()
-                if self.loaded and self.one_round:
+                if self.loaded and self.one_round and self:
                   self.cut_through()
                   self.stopbot()
                   print("IM DONE##################################################################################")

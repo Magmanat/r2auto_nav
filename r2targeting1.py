@@ -20,13 +20,13 @@ import time
 and forward'''
 
 #variable
-speedchange = 0.05
-rotatechange = 0.1
-hot_threshold = 30.0
-shoot_distance = 0.30
-front_angle = 3
-front_angles = range(-front_angle,front_angle,1)
-move_res = 0.2 #time for sleep when moving
+TARGETspeedchange = 0.05
+TARGETrotatechange = 0.1
+TARGET_hotthreshhold = 30.0
+TARGETshoot_distance = 0.30
+TARGET_front_angle = 3
+TARGET_front_angles = range(-TARGET_front_angle,TARGET_front_angle,1)
+TARGET_moveres = 0.2 #time for sleep when moving
 
 
 class Targeter(Node):
@@ -72,14 +72,14 @@ class Targeter(Node):
             self.stopbot()
             print("Target Detected, Stop Bot")
             self.center_target()
-            if (self.front_distance < shoot_distance):
+            if (self.front_distance < TARGETshoot_distance):
                 if self.centered == False:
                     self.center_target()
                 else:
                     self.stopbot()
                     print("moving onto shooting phase")
                     self.destroy_node(self)
-            if self.centered == True and self.front_distance > shoot_distance:
+            if self.centered == True and self.front_distance > TARGETshoot_distance:
                     #stop this script and move onto shooting script
                 self.robotforward()
         else:
@@ -96,25 +96,25 @@ class Targeter(Node):
         twist.angular.z = 0.0
         self.publisher_.publish(twist) 
 
-    #funtion that moves bot forward by 1 step according speedchange variable and sleep time
+    #funtion that moves bot forward by 1 step according TARGETspeedchange variable and sleep time
     def robotforward(self):
         # start moving
         self.get_logger().info('1 step forward')
         twist = Twist()
-        twist.linear.x = speedchange
+        twist.linear.x = TARGETspeedchange
         twist.angular.z = 0.0
         # not sure if this is really necessary, but things seem to work more
         # reliably with this
         self.publisher_.publish(twist)
         twist.linear.x = 0.0
-        time.sleep(move_res)
+        time.sleep(TARGET_moveres)
         self.publisher_.publish(twist)
 
     def laser_callback(self, msg):
         # create numpy array
         laser_range = list(msg.ranges)
         # find index with minimum value
-        laser_range = laser_range[-front_angle:] + laser_range[:front_angle + 1]
+        laser_range = laser_range[-TARGET_front_angle:] + laser_range[:TARGET_front_angle + 1]
         print(laser_range)
         laser_range_new = []
         for i in laser_range:
@@ -136,7 +136,7 @@ class Targeter(Node):
                     max_col = col
                     max_value = current_value
         print("max temp = %s @ %s" %(max_value,max_col))
-        if max_value >= hot_threshold:     
+        if max_value >= TARGET_hotthreshhold:     
             self.target_presence = True
         else:
             self.target_presence = False
@@ -158,10 +158,10 @@ class Targeter(Node):
                 print("Not centered, 1 step ACW")
                 twist = Twist()
                 twist.linear.x = 0.0
-                twist.angular.z = rotatechange
+                twist.angular.z = TARGETrotatechange
                 self.publisher_.publish(twist)
                 twist.angular.z = 0.0
-                time.sleep(move_res)
+                time.sleep(TARGET_moveres)
                 self.publisher_.publish(twist)
                 self.centered = False
         elif max_col > 4:
@@ -169,10 +169,10 @@ class Targeter(Node):
                 print("Not centered, 1 step CW")
                 twist = Twist()
                 twist.linear.x = 0.0
-                twist.angular.z = -rotatechange
+                twist.angular.z = -TARGETrotatechange
                 self.publisher_.publish(twist)
                 twist.angular.z = 0.0
-                time.sleep(move_res)
+                time.sleep(TARGET_moveres)
                 self.publisher_.publish(twist)
                 self.centered = False
         else:
