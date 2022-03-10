@@ -23,10 +23,10 @@ and forward'''
 speedchange = 0.05
 rotatechange = 0.1
 hot_threshold = 30.0
-shoot_distance = 0.15
-front_angle = 5
-front_angles = range(-front_angle,front_angle+1,1)
-move_res = 1.5 #time for sleep when moving
+shoot_distance = 0.30
+front_angle = 3
+front_angles = range(-front_angle,front_angle,1)
+move_res = 0.2 #time for sleep when moving
 
 
 class Targeter(Node):
@@ -54,7 +54,7 @@ class Targeter(Node):
         #some data
         self.thermal_array = [0 for i in range(64)]
         self.target_presence = False
-        self.front_distance = 100 #-1 REAL VALUE
+        self.front_distance = 100
         self.centered = False
 
 
@@ -72,10 +72,15 @@ class Targeter(Node):
             self.stopbot()
             print("Target Detected, Stop Bot")
             self.center_target()
-            if (len(self.front_distance[0])>0):
-                print("moving onto shooting phase")
-                #stop this script and move onto shooting script
-            if self.centered == True:
+            if (self.front_distance < shoot_distance):
+                if self.centered == False:
+                    self.center_target()
+                else:
+                    self.stopbot()
+                    print("moving onto shooting phase")
+                    self.destroy_node(self)
+            if self.centered == True and self.front_distance > shoot_distance:
+                    #stop this script and move onto shooting script
                 self.robotforward()
         else:
             print("Target Not Detected")
@@ -107,9 +112,18 @@ class Targeter(Node):
 
     def laser_callback(self, msg):
         # create numpy array
-        laser_range = np.array(msg.ranges)
+        laser_range = list(msg.ranges)
         # find index with minimum value
-        self.front_distance = (laser_range[front_angles]<float(shoot_distance)).nonzero()
+        laser_range = laser_range[-front_angle:] + laser_range[:front_angle + 1]
+        print(laser_range)
+        laser_range_new = []
+        for i in laser_range:
+            if i == np.nan or i == np.inf or i == 0:
+                continue
+            laser_range_new.append(i)
+        self.front_distance = np.average(laser_range_new)
+        print("This is the front distance")
+        print(self.front_distance)
 
     #function that checks through array if there is anything hot
     def detect_target(self):
