@@ -96,7 +96,7 @@ class AutoNav(Node):
             LaserScan,
             'scan',
             self.scan_callback,
-            1)
+            qos_profile_sensor_data)
         self.scan_subscription  # prevent unused variable warning
         self.laser_range = np.array([])
 
@@ -175,7 +175,7 @@ class AutoNav(Node):
 
 
     def scan_callback(self, msg):
-        # self.get_logger().info('In scan_callback')
+        self.get_logger().info('In scan_callback')
         # create numpy array
         self.laser_range = np.array(msg.ranges)
         # print to file
@@ -504,6 +504,7 @@ class AutoNav(Node):
 
             while (self.laser_range.size == 0):
                 print("Spin to get a valid lidar data")
+                print(self.laser_range)
                 rclpy.spin_once(self)
             self.timenow = time.time()
             while rclpy.ok():
