@@ -19,6 +19,7 @@ from geometry_msgs.msg import Twist
 from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import OccupancyGrid
+from std_msgs.msg import Float64MultiArray
 from std_msgs.msg import Bool
 from PIL import Image
 import scipy.stats
@@ -39,6 +40,7 @@ TARGET_front_angle = 3
 TARGET_front_angles = range(-TARGET_front_angle,TARGET_front_angle,1)
 TARGET_moveres = 0.2 #time for sleep when moving
 
+speedchange = 0.05
 rotatechange = 0.1
 occ_bins = [-1, 0, 50, 101]
 stop_distance = 0.25
@@ -97,6 +99,23 @@ class Targeter(Node):
         self.target_presence = False
         self.front_distance = 100
         self.centered = False
+
+
+#function that checks through array if there is anything hot
+    def detect_target(self):
+        max_value = -1.0
+        for row in range(len(self.thermal_array)):
+            for col in range(len(self.thermal_array[row])):
+                current_value = self.thermal_array[row][col]
+                if current_value > max_value:
+                    max_row = row
+                    max_col = col
+                    max_value = current_value
+        print("max temp = %s @ %s" %(max_value,max_col))
+        if max_value >= TARGET_hotthreshhold:     
+            self.target_presence = True
+        else:
+            self.target_presence = False
 
 
 #function to get thermal arrray data
@@ -165,22 +184,6 @@ class Targeter(Node):
         self.front_distance = np.average(laser_range_new)
         print("This is the front distance")
         print(self.front_distance)
-
-    #function that checks through array if there is anything hot
-    def detect_target(self):
-        max_value = -1.0
-        for row in range(len(self.thermal_array)):
-            for col in range(len(self.thermal_array[row])):
-                current_value = self.thermal_array[row][col]
-                if current_value > max_value:
-                    max_row = row
-                    max_col = col
-                    max_value = current_value
-        print("max temp = %s @ %s" %(max_value,max_col))
-        if max_value >= TARGET_hotthreshhold:     
-            self.target_presence = True
-        else:
-            self.target_presence = False
 
 #function checks for hottest region and sends command to rotate by 1 step
     def center_target(self):
@@ -288,6 +291,8 @@ class AutoNav(Node):
         self.Xstart = 0
         self.Ystart = 0
         self.mapbase = 0
+        self.thermal_array = []
+        self.target_presence = False
         self.mazelayout = []
 
     def NFC_callback(self,msg):
@@ -338,6 +343,25 @@ class AutoNav(Node):
         # plt.draw_all()
         # # # pause to make sure the plot gets created
         # plt.pause(0.00000000001)
+
+
+#function that checks through array if there is anything hot        
+    def thermal_callback(self, thermal_array):
+        pix_res = (8,8)
+        self.thermal_array = np.reshape(thermal_array.data,pix_res)
+        max_value = -1.0
+        for row in range(len(self.thermal_array)):
+            for col in range(len(self.thermal_array[row])):
+                current_value = self.thermal_array[row][col]
+                if current_value > max_value:
+                    max_row = row
+                    max_col = col
+                    max_value = current_value
+        print("max temp = %s @ %s" %(max_value,max_col))
+        if max_value >= TARGET_hotthreshhold:     
+            self.target_presence = True
+        else:
+            self.target_presence = False
 
 
     def scan_callback(self, msg):
@@ -703,10 +727,10 @@ class AutoNav(Node):
 
                 if self.loaded == False and self.nfc_presence == True:
                   self.loading()
-                if self.loaded and self.one_round and self:
-                  self.cut_through()
+                if self.loaded and self.one_round and self.target_presence:
+                #   self.cut_through()
                   self.stopbot()
-                  print("IM DONE##################################################################################")
+                  print("IM DONE, TIME FOR ##################################################################################")
                   break
                 self.pick_direction()
                 # allow the callback functions to run
@@ -735,6 +759,9 @@ def main(args=None):
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
     auto_nav.destroy_node()
+    targeter = Targeter()
+    rclpy.spin(targeter)
+    targeter.destroy_node()
     #do some thermal nav node and shooting node here
     rclpy.shutdown()
 
