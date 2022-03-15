@@ -34,13 +34,13 @@ import time
 
 TARGETspeedchange = 0.05
 TARGETrotatechange = 0.1
-TARGET_hotthreshhold = 30.0
+TARGET_hotthreshhold = 31
 TARGETshoot_distance = 0.30
 TARGET_front_angle = 3
 TARGET_front_angles = range(-TARGET_front_angle,TARGET_front_angle,1)
 TARGET_moveres = 0.2 #time for sleep when moving
 
-speedchange = 0.05
+speedchange = 0.1
 rotatechange = 0.1
 occ_bins = [-1, 0, 50, 101]
 stop_distance = 0.25
@@ -99,6 +99,10 @@ class Targeter(Node):
         self.target_presence = False
         self.front_distance = 100
         self.centered = False
+        self.targeter_count = 0
+        self.targeter_count_threshhold = 6
+        self.target_timer = time.time()
+        self.timer_threshhold = 0.5
 
 
 #function that checks through array if there is anything hot
@@ -112,7 +116,7 @@ class Targeter(Node):
                     max_col = col
                     max_value = current_value
         print("max temp = %s @ %s" %(max_value,max_col))
-        if max_value >= TARGET_hotthreshhold:     
+        if max_value >= TARGET_hotthreshhold:
             self.target_presence = True
         else:
             self.target_presence = False
@@ -295,6 +299,13 @@ class AutoNav(Node):
         self.target_presence = False
         self.mazelayout = []
 
+        self.targeter_count = 0
+        self.targeter_count_threshhold = 3
+        self.target_timer = time.time()
+        self.timer_threshhold = 0.2
+
+        
+
     def NFC_callback(self,msg):
         if msg.data == True:
             self.nfc_presence = True
@@ -358,9 +369,16 @@ class AutoNav(Node):
                     max_col = col
                     max_value = current_value
         print("max temp = %s @ %s" %(max_value,max_col))
-        if max_value >= TARGET_hotthreshhold:     
-            self.target_presence = True
+        if max_value >= TARGET_hotthreshhold:
+            if time.time() - self.target_timer > self.timer_threshhold:
+                self.target_timer = time.time()
+                print("added to counter")
+                self.targeter_count += 1 
+                print(self.targeter_count)
+            if self.targeter_count >= self.targeter_count_threshhold:
+                self.target_presence = True
         else:
+            self.targeter_count = 0
             self.target_presence = False
 
 
@@ -444,12 +462,13 @@ class AutoNav(Node):
         # Logic for following the wall
         # >d means no wall detected by that laser beam
         # <d means a wall was detected by that laser beam
-        d = 0.28  # wall distance from the robot. It will follow the right wall and maintain this distance
+        front_d = 0.4
+        side_d = 0.30  # wall distance from the robot. It will follow the left wall and maintain this distance
         # Set turning speeds (to the left) in rad/s
 
         # These values were determined by trial and error.
-        self.turning_speed_wf_fast = 0.60  # Fast turn ideal = 1.0
-        self.turning_speed_wf_slow = 0.2  # Slow turn = 0.4
+        self.turning_speed_wf_fast = 1.0 # Fast turn ideal = 1.0
+        self.turning_speed_wf_slow = 0.4  # Slow turn = 0.4
         # Set movement speed
         self.forward_speed = speedchange
         # Set up twist message as msg
@@ -461,16 +480,16 @@ class AutoNav(Node):
         msg.angular.y = 0.0
         msg.angular.z = 0.0
 
-        if self.leftfront_dist > d and self.front_dist > d and self.rightfront_dist > d:
+        if self.leftfront_dist > side_d and self.front_dist > front_d and self.rightfront_dist > side_d:
             self.wall_following_state = "search for wall"
             msg.linear.x = self.forward_speed
             msg.angular.z = self.turning_speed_wf_slow  # turn left to find wall
 
-        elif self.leftfront_dist > d and self.front_dist < d and self.rightfront_dist > d:
+        elif self.leftfront_dist > side_d and self.front_dist < front_d and self.rightfront_dist > side_d:
             self.wall_following_state = "turn right"
             msg.angular.z = -self.turning_speed_wf_fast
 
-        elif (self.leftfront_dist < d and self.front_dist > d and self.rightfront_dist > d):
+        elif (self.leftfront_dist < side_d and self.front_dist > front_d and self.rightfront_dist > side_d):
             if (self.leftfront_dist < 0.25):
                 # Getting too close to the wall
                 self.wall_following_state = "turn right"
@@ -481,24 +500,24 @@ class AutoNav(Node):
                 self.wall_following_state = "follow wall"
                 msg.linear.x = self.forward_speed
 
-        elif self.leftfront_dist > d and self.front_dist > d and self.rightfront_dist < d:
+        elif self.leftfront_dist > side_d and self.front_dist > front_d and self.rightfront_dist < side_d:
             self.wall_following_state = "search for wall"
             msg.linear.x = self.forward_speed
             msg.angular.z = self.turning_speed_wf_slow  # turn left to find wall
 
-        elif self.leftfront_dist < d and self.front_dist < d and self.rightfront_dist > d:
+        elif self.leftfront_dist < side_d and self.front_dist < front_d and self.rightfront_dist > side_d:
             self.wall_following_state = "turn right"
             msg.angular.z = -self.turning_speed_wf_fast
 
-        elif self.leftfront_dist > d and self.front_dist < d and self.rightfront_dist < d:
+        elif self.leftfront_dist > side_d and self.front_dist < front_d and self.rightfront_dist < side_d:
             self.wall_following_state = "turn right"
             msg.angular.z = -self.turning_speed_wf_fast
 
-        elif self.leftfront_dist < d and self.front_dist < d and self.rightfront_dist < d:
+        elif self.leftfront_dist < side_d and self.front_dist < front_d and self.rightfront_dist < side_d:
             self.wall_following_state = "turn right"
             msg.angular.z = -self.turning_speed_wf_fast
 
-        elif self.leftfront_dist < d and self.front_dist > d and self.rightfront_dist < d:
+        elif self.leftfront_dist < side_d and self.front_dist > front_d and self.rightfront_dist < side_d:
             self.wall_following_state = "search for wall"
             msg.linear.x = self.forward_speed
             msg.angular.z = self.turning_speed_wf_slow  # turn left to find wall
@@ -557,132 +576,132 @@ class AutoNav(Node):
         return 5
       return np.average(self.laser_range[direction-5:direction+5])
       
-    def cut_through(self):
-        startingX = ((len(self.mazelayout[0]) * self.resolution) / 2)
-        startingY = 0
-        print(self.Xadjust) 
-        while abs(self.Xpos - startingX) > 0.25 or  abs(self.Ypos - startingY) > 0.25:
-            self.pick_direction()
-            print("in cut through")
-            rclpy.spin_once(self)
-            print("target")
-            print(startingX)
-            print(startingY)
-            print("current")
-            print(self.Xpos)
-            print(self.Ypos)
-        self.rotatebot(-90)
-        self.move_forward()
-        initialY = self.Ypos
-        # check prev u-turn direction
-        while True:
-            self.move_forward()
-            while True:
-                rclpy.spin_once(self)
-                lri = (self.laser_range[front_angles]<float(stop_distance)).nonzero()
-                            # self.get_logger().info('Distances: %s' % str(lri))
-                            # check if the initial position has been set
+    # def cut_through(self):
+    #     startingX = ((len(self.mazelayout[0]) * self.resolution) / 2)
+    #     startingY = 0
+    #     print(self.Xadjust) 
+    #     while abs(self.Xpos - startingX) > 0.25 or  abs(self.Ypos - startingY) > 0.25:
+    #         self.pick_direction()
+    #         print("in cut through")
+    #         rclpy.spin_once(self)
+    #         print("target")
+    #         print(startingX)
+    #         print(startingY)
+    #         print("current")
+    #         print(self.Xpos)
+    #         print(self.Ypos)
+    #     self.rotatebot(-90)
+    #     self.move_forward()
+    #     initialY = self.Ypos
+    #     # check prev u-turn direction
+    #     while True:
+    #         self.move_forward()
+    #         while True:
+    #             rclpy.spin_once(self)
+    #             lri = (self.laser_range[front_angles]<float(stop_distance)).nonzero()
+    #                         # self.get_logger().info('Distances: %s' % str(lri))
+    #                         # check if the initial position has been set
 
-                            # if the list is not empty
-                if(len(lri[0])>0):
-                    # stop moving
-                    self.stopbot()
-                    self.get_logger().info('Obstacle encountered infront')
-                    break
-            print("Y initial and difference")
-            print(initialY)
-            print(abs(initialY - self.Ypos))
-            print(len(self.mazelayout) * self.resolution - 2.0)
-            if (abs(initialY - self.Ypos) >= len(self.mazelayout) * self.resolution - 2.0):
-                break
-            bypass_direction = -90
-            bypass_opp_dir = 90
+    #                         # if the list is not empty
+    #             if(len(lri[0])>0):
+    #                 # stop moving
+    #                 self.stopbot()
+    #                 self.get_logger().info('Obstacle encountered infront')
+    #                 break
+    #         print("Y initial and difference")
+    #         print(initialY)
+    #         print(abs(initialY - self.Ypos))
+    #         print(len(self.mazelayout) * self.resolution - 2.0)
+    #         if (abs(initialY - self.Ypos) >= len(self.mazelayout) * self.resolution - 2.0):
+    #             break
+    #         bypass_direction = -90
+    #         bypass_opp_dir = 90
 
-            # variable used to hold the current x and y position of the turtlebot
-            initialX = self.Xpos
-            self.get_logger().info('Initial x position is: %.2f' % initialX)
-            # turn the turtlebot before starting adopted Pledge algorithm
-            self.get_logger().info('Turtlebot turned %s to start Pledge Algo' % bypass_direction)
-            self.rotatebot(bypass_direction)
-            # start moving forward after turn is made
-            self.move_forward()
-            # setting the first avg wall distance
-            prev_wall_avg_side_distance = self.get_side_wall_distance(bypass_opp_dir)
-            # variable to prevent turtlebot from exiting function even before it starts moving
-            moved_off = False
+    #         # variable used to hold the current x and y position of the turtlebot
+    #         initialX = self.Xpos
+    #         self.get_logger().info('Initial x position is: %.2f' % initialX)
+    #         # turn the turtlebot before starting adopted Pledge algorithm
+    #         self.get_logger().info('Turtlebot turned %s to start Pledge Algo' % bypass_direction)
+    #         self.rotatebot(bypass_direction)
+    #         # start moving forward after turn is made
+    #         self.move_forward()
+    #         # setting the first avg wall distance
+    #         prev_wall_avg_side_distance = self.get_side_wall_distance(bypass_opp_dir)
+    #         # variable to prevent turtlebot from exiting function even before it starts moving
+    #         moved_off = False
 
-            # Loop to continuously check till turtlebot is done
-            # Breaks out of loop automatically when done
-            while (True):
+    #         # Loop to continuously check till turtlebot is done
+    #         # Breaks out of loop automatically when done
+    #         while (True):
 
-                # to update the laser_range values
-                rclpy.spin_once(self)
-                print("initial")
-                print(initialX)
-                print("current")
-                print(self.Xpos)
-                # check if the turtlebot has reached the other side after moving off, with an allowance of 1 cm
-                if (moved_off and (abs(initialX - self.Xpos) <= 0.15)):
-                    # turtlebot has successfully navigated around the obstacle, exiting function to resume normal navigation
-                    self.get_logger().info('Turtlebot successfully navigated around the obstacle')
-                    self.rotatebot(bypass_direction)
-                    break
-                    self.move_forward()
+    #             # to update the laser_range values
+    #             rclpy.spin_once(self)
+    #             print("initial")
+    #             print(initialX)
+    #             print("current")
+    #             print(self.Xpos)
+    #             # check if the turtlebot has reached the other side after moving off, with an allowance of 1 cm
+    #             if (moved_off and (abs(initialX - self.Xpos) <= 0.15)):
+    #                 # turtlebot has successfully navigated around the obstacle, exiting function to resume normal navigation
+    #                 self.get_logger().info('Turtlebot successfully navigated around the obstacle')
+    #                 self.rotatebot(bypass_direction)
+    #                 break
+    #                 self.move_forward()
 
-                # check if there is obstacle in front blocking the way
-                if self.laser_range.size != 0:
-                    # check distances in front of TurtleBot and find values less
-                    # than stop_distance
-                    front_wall = (self.laser_range[front_angles]<float(stop_distance)).nonzero()
+    #             # check if there is obstacle in front blocking the way
+    #             if self.laser_range.size != 0:
+    #                 # check distances in front of TurtleBot and find values less
+    #                 # than stop_distance
+    #                 front_wall = (self.laser_range[front_angles]<float(stop_distance)).nonzero()
 
-                    if(len(front_wall[0])>0):
-                        # stop moving
-                        self.stopbot()
-                        self.get_logger().info('Obstacle encountered infront')
+    #                 if(len(front_wall[0])>0):
+    #                     # stop moving
+    #                     self.stopbot()
+    #                     self.get_logger().info('Obstacle encountered infront')
 
-                        # exit bypass function if edge of maze is reached
-                        if (abs(initialY - self.Ypos) >= len(self.mazelayout) * self.resolution - 2):
-                            self.get_logger().info('Reached the edge of the maze while bypassing obs')
-                            return
-                        if np.take(self.laser_range, 90) > np.take(self.laser_range, 270):
-                            self.rotatebot(90)
-                        else:
-                            self.rotatebot(-90)
+    #                     # exit bypass function if edge of maze is reached
+    #                     if (abs(initialY - self.Ypos) >= len(self.mazelayout) * self.resolution - 2):
+    #                         self.get_logger().info('Reached the edge of the maze while bypassing obs')
+    #                         return
+    #                     if np.take(self.laser_range, 90) > np.take(self.laser_range, 270):
+    #                         self.rotatebot(90)
+    #                     else:
+    #                         self.rotatebot(-90)
 
-                        self.move_forward()
+    #                     self.move_forward()
 
-                # calculate the current avg distance from wall from front and side
-                # self.get_logger().info('Updating current average wall distance')
-                curr_wall_avg_side_distance = self.get_side_wall_distance(bypass_opp_dir)
-                if (curr_wall_avg_side_distance < prev_wall_avg_side_distance):
-                        # reset the the average distance of the wall on the wall
-                        prev_wall_avg_side_distance = curr_wall_avg_side_distance
-                        self.get_logger().info('New previous average wall distance is %.2f' % prev_wall_avg_side_distance)
-                # check if the obstacle is still on the side
-                # if distance suddenly increases significantly, obstacle no longer on the side
-                # checked by if the avg distance between previous and current distance from wall defer by more than 50%
-                # and the prev_wall_avg_distance needs to be less than 0.5m away to ensure the wall has been detected before
-                distance_diff = curr_wall_avg_side_distance - prev_wall_avg_side_distance
-                if ((distance_diff > 2 * prev_wall_avg_side_distance) and (prev_wall_avg_side_distance <= 0.5)):
-                    self.get_logger().info('Side wall no longer detected')
-                    self.get_logger().info('Distance diff is this %.2f' % distance_diff)
-                    # extra distance so that the turtlebot has sufficient space to turn
-                    timenow = time.time()
-                    while time.time() - timenow < 0.8:
-                        print("stopping")
-                    self.stopbot()
-                    # wall no longer detected, stop and rotate turtlebot   
-                    self.rotatebot(bypass_opp_dir)
-                    # set moved_off to True only once
-                    if (moved_off == False):
-                        moved_off = True
-                        self.get_logger().info('Moved_off set to True')
+    #             # calculate the current avg distance from wall from front and side
+    #             # self.get_logger().info('Updating current average wall distance')
+    #             curr_wall_avg_side_distance = self.get_side_wall_distance(bypass_opp_dir)
+    #             if (curr_wall_avg_side_distance < prev_wall_avg_side_distance):
+    #                     # reset the the average distance of the wall on the wall
+    #                     prev_wall_avg_side_distance = curr_wall_avg_side_distance
+    #                     self.get_logger().info('New previous average wall distance is %.2f' % prev_wall_avg_side_distance)
+    #             # check if the obstacle is still on the side
+    #             # if distance suddenly increases significantly, obstacle no longer on the side
+    #             # checked by if the avg distance between previous and current distance from wall defer by more than 50%
+    #             # and the prev_wall_avg_distance needs to be less than 0.5m away to ensure the wall has been detected before
+    #             distance_diff = curr_wall_avg_side_distance - prev_wall_avg_side_distance
+    #             if ((distance_diff > 2 * prev_wall_avg_side_distance) and (prev_wall_avg_side_distance <= 0.5)):
+    #                 self.get_logger().info('Side wall no longer detected')
+    #                 self.get_logger().info('Distance diff is this %.2f' % distance_diff)
+    #                 # extra distance so that the turtlebot has sufficient space to turn
+    #                 timenow = time.time()
+    #                 while time.time() - timenow < 0.8:
+    #                     print("stopping")
+    #                 self.stopbot()
+    #                 # wall no longer detected, stop and rotate turtlebot   
+    #                 self.rotatebot(bypass_opp_dir)
+    #                 # set moved_off to True only once
+    #                 if (moved_off == False):
+    #                     moved_off = True
+    #                     self.get_logger().info('Moved_off set to True')
 
-                    # reset the avg side wall distance
-                    self.get_logger().info('Resetting prev average side wall distance')
-                    prev_wall_avg_side_distance = self.get_side_wall_distance(bypass_opp_dir)
-                    self.get_logger().info('New prev average wall distance is %.2f' % prev_wall_avg_side_distance)
-                    self.move_forward()
+    #                 # reset the avg side wall distance
+    #                 self.get_logger().info('Resetting prev average side wall distance')
+    #                 prev_wall_avg_side_distance = self.get_side_wall_distance(bypass_opp_dir)
+    #                 self.get_logger().info('New prev average wall distance is %.2f' % prev_wall_avg_side_distance)
+    #                 self.move_forward()
         
 
         
@@ -699,12 +718,19 @@ class AutoNav(Node):
             self.timenow = time.time()
             while rclpy.ok():
                 # print(time.time())
-                print("target")
-                print(self.Xstart)
-                print(self.Ystart)
-                print("current")
-                print(self.Xpos)
-                print(self.Ypos)
+                # print("target")
+                # print(self.Xstart)
+                # print(self.Ystart)
+                # print("current")
+                # print(self.Xpos)
+                # print(self.Ypos)
+                print("CHANGED")
+                print("CHANGED")
+                print("CHANGED")
+                print("CHANGED")
+                print("CHANGED")
+                print("CHANGED")
+                print("CHANGED")
                 if time.time() - self.timenow > initialdelay and self.recordedinitial == False:
                     self.recordedinitial = True
                     self.recordposition()
@@ -716,7 +742,7 @@ class AutoNav(Node):
                     print("################")
                     print("moved off")
                     self.moved_off = True
-                if self.moved_off and self.loaded and (abs(self.Xstart - self.Xpos) < 0.5 and abs(self.Ystart - self.Ypos) < 0.5) and self.one_round == False:
+                if self.one_round == False and self.moved_off and self.loaded and (abs(self.Xstart - self.Xpos) < 0.25 and abs(self.Ystart - self.Ypos) < 0.25):
                     print("################")
                     print("################")
                     print("################")
@@ -727,6 +753,8 @@ class AutoNav(Node):
 
                 if self.loaded == False and self.nfc_presence == True:
                   self.loading()
+                if self.loaded and self.one_round:
+                    print("finding thermal now")
                 if self.loaded and self.one_round and self.target_presence:
                 #   self.cut_through()
                   self.stopbot()
