@@ -300,9 +300,9 @@ class AutoNav(Node):
         self.mazelayout = []
 
         self.targeter_count = 0
-        self.targeter_count_threshhold = 3
+        self.targeter_count_threshhold = 5
         self.target_timer = time.time()
-        self.timer_threshhold = 0.2
+        self.timer_threshhold = 0.1
 
         
 
@@ -724,13 +724,6 @@ class AutoNav(Node):
                 # print("current")
                 # print(self.Xpos)
                 # print(self.Ypos)
-                print("CHANGED")
-                print("CHANGED")
-                print("CHANGED")
-                print("CHANGED")
-                print("CHANGED")
-                print("CHANGED")
-                print("CHANGED")
                 if time.time() - self.timenow > initialdelay and self.recordedinitial == False:
                     self.recordedinitial = True
                     self.recordposition()
