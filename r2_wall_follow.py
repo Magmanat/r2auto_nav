@@ -389,7 +389,7 @@ class AutoNav(Node):
         # print to file
         # np.savetxt(scanfile, self.laser_range)
         # replace 0's with nan
-        self.laser_range[self.laser_range==0] = np.nan
+        self.laser_range[self.laser_range==0] = 5
 
 
     # function to rotate the TurtleBot
@@ -447,13 +447,11 @@ class AutoNav(Node):
 
     def pick_direction(self):
         # self.get_logger().info('In pick direction:')
+        laser_ranges = self.laser_range.tolist()
         
-        self.front_dist = np.nan_to_num(
-            self.laser_range[0], copy=False, nan=100)
-        self.leftfront_dist = np.nan_to_num(
-            self.laser_range[45], copy=False, nan=100)
-        self.rightfront_dist = np.nan_to_num(
-            self.laser_range[315], copy=False, nan=100)
+        self.front_dist = min(laser_ranges[0:14] + laser_ranges[346:])
+        self.leftfront_dist = min(laser_ranges[15:45])
+        self.rightfront_dist = min(laser_ranges[315:345])
 
         # self.get_logger().info('Front Distance: %s' % str(self.front_dist))
         # self.get_logger().info('Front Left Distance: %s' % str(self.leftfront_dist))
@@ -463,7 +461,7 @@ class AutoNav(Node):
         # >d means no wall detected by that laser beam
         # <d means a wall was detected by that laser beam
         front_d = 0.4
-        side_d = 0.30  # wall distance from the robot. It will follow the left wall and maintain this distance
+        side_d = 0.40  # wall distance from the robot. It will follow the left wall and maintain this distance
         # Set turning speeds (to the left) in rad/s
 
         # These values were determined by trial and error.
