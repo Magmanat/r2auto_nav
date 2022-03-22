@@ -1,0 +1,24 @@
+[3.093s] Invoking command in '/home/ubuntu/turtlebot3_ws/build/py_servo': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/py_servo/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/ubuntu/turtlebot3_ws/install/py_servo --uninstall --editable --build-directory /home/ubuntu/turtlebot3_ws/build/py_servo/build
+[5.504s] running develop
+[6.953s] Invoked command in '/home/ubuntu/turtlebot3_ws/build/py_servo' returned '0': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/py_servo/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/ubuntu/turtlebot3_ws/install/py_servo --uninstall --editable --build-directory /home/ubuntu/turtlebot3_ws/build/py_servo/build
+[6.960s] Invoking command in '/home/ubuntu/turtlebot3_ws/src/py_servo': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/py_servo/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/py_servo build --build-base /home/ubuntu/turtlebot3_ws/build/py_servo/build install --prefix /home/ubuntu/turtlebot3_ws/install/py_servo --record /home/ubuntu/turtlebot3_ws/build/py_servo/install.log --single-version-externally-managed
+[8.770s] running egg_info
+[8.775s] writing ../../build/py_servo/py_servo.egg-info/PKG-INFO
+[8.778s] writing dependency_links to ../../build/py_servo/py_servo.egg-info/dependency_links.txt
+[8.780s] writing entry points to ../../build/py_servo/py_servo.egg-info/entry_points.txt
+[8.783s] writing requirements to ../../build/py_servo/py_servo.egg-info/requires.txt
+[8.785s] writing top-level names to ../../build/py_servo/py_servo.egg-info/top_level.txt
+[9.057s] reading manifest file '../../build/py_servo/py_servo.egg-info/SOURCES.txt'
+[9.067s] writing manifest file '../../build/py_servo/py_servo.egg-info/SOURCES.txt'
+[9.068s] running build
+[9.070s] running build_py
+[9.071s] running install
+[9.076s] running install_lib
+[9.087s] running install_data
+[9.091s] running install_egg_info
+[9.103s] removing '/home/ubuntu/turtlebot3_ws/install/py_servo/lib/python3.8/site-packages/py_servo-0.0.0-py3.8.egg-info' (and everything under it)
+[9.106s] Copying ../../build/py_servo/py_servo.egg-info to /home/ubuntu/turtlebot3_ws/install/py_servo/lib/python3.8/site-packages/py_servo-0.0.0-py3.8.egg-info
+[9.162s] running install_scripts
+[9.297s] Installing py_servo script to /home/ubuntu/turtlebot3_ws/install/py_servo/lib/py_servo
+[9.300s] writing list of installed files to '/home/ubuntu/turtlebot3_ws/build/py_servo/install.log'
+[9.900s] Invoked command in '/home/ubuntu/turtlebot3_ws/src/py_servo' returned '0': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/py_servo/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/py_servo build --build-base /home/ubuntu/turtlebot3_ws/build/py_servo/build install --prefix /home/ubuntu/turtlebot3_ws/install/py_servo --record /home/ubuntu/turtlebot3_ws/build/py_servo/install.log --single-version-externally-managed

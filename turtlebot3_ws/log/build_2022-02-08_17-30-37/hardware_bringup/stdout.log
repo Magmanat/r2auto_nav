@@ -1,0 +1,16 @@
+running develop
+running egg_info
+writing hardware_bringup.egg-info/PKG-INFO
+writing dependency_links to hardware_bringup.egg-info/dependency_links.txt
+writing entry points to hardware_bringup.egg-info/entry_points.txt
+writing requirements to hardware_bringup.egg-info/requires.txt
+writing top-level names to hardware_bringup.egg-info/top_level.txt
+reading manifest file 'hardware_bringup.egg-info/SOURCES.txt'
+writing manifest file 'hardware_bringup.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware-bringup.egg-link (link to .)
+Installing NFC_pub script to /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/hardware_bringup
+Installing servo_run script to /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/hardware_bringup
+
+Installed /home/ubuntu/turtlebot3_ws/build/hardware_bringup
+running install_data

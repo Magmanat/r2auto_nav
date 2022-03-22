@@ -1,0 +1,5 @@
+[console_scripts]
+button_pub = hardware_bringup.buttondetect:main
+nfc_pub = hardware_bringup.NFC_pub:main
+servo_run = hardware_bringup.servorun:main
+

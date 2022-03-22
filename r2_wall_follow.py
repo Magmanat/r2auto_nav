@@ -751,7 +751,7 @@ class AutoNav(Node):
                 if self.loaded and self.one_round and self.target_presence:
                 #   self.cut_through()
                   self.stopbot()
-                  print("IM DONE, TIME FOR ##################################################################################")
+                  print("IM DONE, TIME FOR #######################################################")
                   break
                 self.pick_direction()
                 # allow the callback functions to run

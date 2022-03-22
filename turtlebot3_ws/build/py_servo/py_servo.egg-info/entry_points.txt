@@ -1,0 +1,3 @@
+[console_scripts]
+py_servo = py_servo.servorun:main
+

@@ -1,0 +1,29 @@
+[2.597s] Invoking command in '/home/ubuntu/turtlebot3_ws/build/hardware_bringup': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/ubuntu/turtlebot3_ws/install/hardware_bringup --uninstall --editable --build-directory /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build
+[5.485s] running develop
+[7.385s] Invoked command in '/home/ubuntu/turtlebot3_ws/build/hardware_bringup' returned '0': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/ubuntu/turtlebot3_ws/install/hardware_bringup --uninstall --editable --build-directory /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build
+[7.392s] Invoking command in '/home/ubuntu/turtlebot3_ws/src/hardware_bringup': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/hardware_bringup build --build-base /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build install --prefix /home/ubuntu/turtlebot3_ws/install/hardware_bringup --record /home/ubuntu/turtlebot3_ws/build/hardware_bringup/install.log --single-version-externally-managed
+[9.387s] running egg_info
+[9.392s] writing ../../build/hardware_bringup/hardware_bringup.egg-info/PKG-INFO
+[9.394s] writing dependency_links to ../../build/hardware_bringup/hardware_bringup.egg-info/dependency_links.txt
+[9.396s] writing entry points to ../../build/hardware_bringup/hardware_bringup.egg-info/entry_points.txt
+[9.399s] writing requirements to ../../build/hardware_bringup/hardware_bringup.egg-info/requires.txt
+[9.400s] writing top-level names to ../../build/hardware_bringup/hardware_bringup.egg-info/top_level.txt
+[9.703s] reading manifest file '../../build/hardware_bringup/hardware_bringup.egg-info/SOURCES.txt'
+[9.712s] writing manifest file '../../build/hardware_bringup/hardware_bringup.egg-info/SOURCES.txt'
+[9.714s] running build
+[9.716s] running build_py
+[9.717s] copying hardware_bringup/buttondetect.py -> /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup
+[9.724s] running install
+[9.730s] running install_lib
+[9.741s] copying /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/buttondetect.py -> /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup
+[9.749s] byte-compiling /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/buttondetect.py to buttondetect.cpython-38.pyc
+[9.761s] running install_data
+[9.765s] running install_egg_info
+[9.777s] removing '/home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup-0.0.0-py3.8.egg-info' (and everything under it)
+[9.781s] Copying ../../build/hardware_bringup/hardware_bringup.egg-info to /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup-0.0.0-py3.8.egg-info
+[9.793s] running install_scripts
+[9.930s] Installing button_pub script to /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/hardware_bringup
+[9.932s] Installing nfc_pub script to /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/hardware_bringup
+[9.935s] Installing servo_run script to /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/hardware_bringup
+[9.940s] writing list of installed files to '/home/ubuntu/turtlebot3_ws/build/hardware_bringup/install.log'
+[10.163s] Invoked command in '/home/ubuntu/turtlebot3_ws/src/hardware_bringup' returned '0': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/hardware_bringup build --build-base /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build install --prefix /home/ubuntu/turtlebot3_ws/install/hardware_bringup --record /home/ubuntu/turtlebot3_ws/build/hardware_bringup/install.log --single-version-externally-managed

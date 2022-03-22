@@ -1,0 +1,51 @@
+running develop
+Removing /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware-bringup.egg-link (link to .)
+running egg_info
+writing ../../build/hardware_bringup/hardware_bringup.egg-info/PKG-INFO
+writing dependency_links to ../../build/hardware_bringup/hardware_bringup.egg-info/dependency_links.txt
+writing entry points to ../../build/hardware_bringup/hardware_bringup.egg-info/entry_points.txt
+writing requirements to ../../build/hardware_bringup/hardware_bringup.egg-info/requires.txt
+writing top-level names to ../../build/hardware_bringup/hardware_bringup.egg-info/top_level.txt
+reading manifest file '../../build/hardware_bringup/hardware_bringup.egg-info/SOURCES.txt'
+writing manifest file '../../build/hardware_bringup/hardware_bringup.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build
+creating /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib
+creating /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup
+copying hardware_bringup/__init__.py -> /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup
+copying hardware_bringup/NFC_pub.py -> /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup
+copying hardware_bringup/servorun.py -> /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup
+creating /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/submodules
+copying hardware_bringup/submodules/__init__.py -> /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/submodules
+copying hardware_bringup/submodules/pn532.py -> /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/submodules
+copying hardware_bringup/submodules/spi.py -> /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/submodules
+copying hardware_bringup/submodules/i2c.py -> /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/submodules
+copying hardware_bringup/submodules/uart.py -> /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/submodules
+running install
+running install_lib
+creating /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup
+copying /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/__init__.py -> /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup
+copying /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/NFC_pub.py -> /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup
+creating /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/submodules
+copying /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/submodules/__init__.py -> /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/submodules
+copying /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/submodules/pn532.py -> /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/submodules
+copying /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/submodules/spi.py -> /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/submodules
+copying /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/submodules/i2c.py -> /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/submodules
+copying /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/submodules/uart.py -> /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/submodules
+copying /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/servorun.py -> /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup
+byte-compiling /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/__init__.py to __init__.cpython-38.pyc
+byte-compiling /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/NFC_pub.py to NFC_pub.cpython-38.pyc
+byte-compiling /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/submodules/__init__.py to __init__.cpython-38.pyc
+byte-compiling /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/submodules/pn532.py to pn532.cpython-38.pyc
+byte-compiling /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/submodules/spi.py to spi.cpython-38.pyc
+byte-compiling /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/submodules/i2c.py to i2c.cpython-38.pyc
+byte-compiling /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/submodules/uart.py to uart.cpython-38.pyc
+byte-compiling /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/servorun.py to servorun.cpython-38.pyc
+running install_data
+running install_egg_info
+Copying ../../build/hardware_bringup/hardware_bringup.egg-info to /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup-0.0.0-py3.8.egg-info
+running install_scripts
+Installing NFC_pub script to /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/hardware_bringup
+Installing servo_run script to /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/hardware_bringup
+writing list of installed files to '/home/ubuntu/turtlebot3_ws/build/hardware_bringup/install.log'

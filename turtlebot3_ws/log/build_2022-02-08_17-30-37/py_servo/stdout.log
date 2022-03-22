@@ -1,0 +1,15 @@
+running develop
+running egg_info
+writing py_servo.egg-info/PKG-INFO
+writing dependency_links to py_servo.egg-info/dependency_links.txt
+writing entry points to py_servo.egg-info/entry_points.txt
+writing requirements to py_servo.egg-info/requires.txt
+writing top-level names to py_servo.egg-info/top_level.txt
+reading manifest file 'py_servo.egg-info/SOURCES.txt'
+writing manifest file 'py_servo.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/ubuntu/turtlebot3_ws/install/py_servo/lib/python3.8/site-packages/py-servo.egg-link (link to .)
+Installing py_servo script to /home/ubuntu/turtlebot3_ws/install/py_servo/lib/py_servo
+
+Installed /home/ubuntu/turtlebot3_ws/build/py_servo
+running install_data

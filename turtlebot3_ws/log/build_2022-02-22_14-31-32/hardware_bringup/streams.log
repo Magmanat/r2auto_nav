@@ -1,0 +1,32 @@
+[2.683s] Invoking command in '/home/ubuntu/turtlebot3_ws/build/hardware_bringup': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/ubuntu/turtlebot3_ws/install/hardware_bringup --uninstall --editable --build-directory /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build
+[5.362s] running develop
+[7.264s] Invoked command in '/home/ubuntu/turtlebot3_ws/build/hardware_bringup' returned '0': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/ubuntu/turtlebot3_ws/install/hardware_bringup --uninstall --editable --build-directory /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build
+[7.276s] Invoking command in '/home/ubuntu/turtlebot3_ws/src/hardware_bringup': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/hardware_bringup build --build-base /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build install --prefix /home/ubuntu/turtlebot3_ws/install/hardware_bringup --record /home/ubuntu/turtlebot3_ws/build/hardware_bringup/install.log --single-version-externally-managed
+[9.238s] running egg_info
+[9.243s] writing ../../build/hardware_bringup/hardware_bringup.egg-info/PKG-INFO
+[9.245s] writing dependency_links to ../../build/hardware_bringup/hardware_bringup.egg-info/dependency_links.txt
+[9.248s] writing entry points to ../../build/hardware_bringup/hardware_bringup.egg-info/entry_points.txt
+[9.250s] writing requirements to ../../build/hardware_bringup/hardware_bringup.egg-info/requires.txt
+[9.251s] writing top-level names to ../../build/hardware_bringup/hardware_bringup.egg-info/top_level.txt
+[9.539s] reading manifest file '../../build/hardware_bringup/hardware_bringup.egg-info/SOURCES.txt'
+[9.550s] writing manifest file '../../build/hardware_bringup/hardware_bringup.egg-info/SOURCES.txt'
+[9.552s] running build
+[9.553s] running build_py
+[9.555s] copying hardware_bringup/NFC_pub.py -> /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup
+[9.556s] copying hardware_bringup/buttondetect.py -> /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup
+[9.562s] running install
+[9.568s] running install_lib
+[9.576s] copying /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/NFC_pub.py -> /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup
+[9.581s] copying /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build/lib/hardware_bringup/buttondetect.py -> /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup
+[9.586s] byte-compiling /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/NFC_pub.py to NFC_pub.cpython-38.pyc
+[9.600s] byte-compiling /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup/buttondetect.py to buttondetect.cpython-38.pyc
+[9.604s] running install_data
+[9.608s] running install_egg_info
+[9.620s] removing '/home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup-0.0.0-py3.8.egg-info' (and everything under it)
+[9.624s] Copying ../../build/hardware_bringup/hardware_bringup.egg-info to /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages/hardware_bringup-0.0.0-py3.8.egg-info
+[9.641s] running install_scripts
+[9.779s] Installing button_pub script to /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/hardware_bringup
+[9.781s] Installing nfc_pub script to /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/hardware_bringup
+[9.783s] Installing servo_run script to /home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/hardware_bringup
+[9.787s] writing list of installed files to '/home/ubuntu/turtlebot3_ws/build/hardware_bringup/install.log'
+[10.004s] Invoked command in '/home/ubuntu/turtlebot3_ws/src/hardware_bringup' returned '0': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/hardware_bringup build --build-base /home/ubuntu/turtlebot3_ws/build/hardware_bringup/build install --prefix /home/ubuntu/turtlebot3_ws/install/hardware_bringup --record /home/ubuntu/turtlebot3_ws/build/hardware_bringup/install.log --single-version-externally-managed

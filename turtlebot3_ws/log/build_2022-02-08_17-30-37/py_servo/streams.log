@@ -1,0 +1,17 @@
+[2.515s] Invoking command in '/home/ubuntu/turtlebot3_ws/build/py_servo': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/py_servo/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/ubuntu/turtlebot3_ws/install/py_servo --editable --build-directory /home/ubuntu/turtlebot3_ws/build/py_servo/build --no-deps install_data --install-dir /home/ubuntu/turtlebot3_ws/install/py_servo
+[4.724s] running develop
+[5.720s] running egg_info
+[5.721s] writing py_servo.egg-info/PKG-INFO
+[5.723s] writing dependency_links to py_servo.egg-info/dependency_links.txt
+[5.724s] writing entry points to py_servo.egg-info/entry_points.txt
+[5.726s] writing requirements to py_servo.egg-info/requires.txt
+[5.727s] writing top-level names to py_servo.egg-info/top_level.txt
+[5.968s] reading manifest file 'py_servo.egg-info/SOURCES.txt'
+[5.974s] writing manifest file 'py_servo.egg-info/SOURCES.txt'
+[5.984s] running build_ext
+[5.987s] Creating /home/ubuntu/turtlebot3_ws/install/py_servo/lib/python3.8/site-packages/py-servo.egg-link (link to .)
+[5.995s] Installing py_servo script to /home/ubuntu/turtlebot3_ws/install/py_servo/lib/py_servo
+[5.997s] 
+[5.999s] Installed /home/ubuntu/turtlebot3_ws/build/py_servo
+[6.000s] running install_data
+[6.202s] Invoked command in '/home/ubuntu/turtlebot3_ws/build/py_servo' returned '0': PYTHONPATH=/home/ubuntu/turtlebot3_ws/install/py_servo/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --prefix /home/ubuntu/turtlebot3_ws/install/py_servo --editable --build-directory /home/ubuntu/turtlebot3_ws/build/py_servo/build --no-deps install_data --install-dir /home/ubuntu/turtlebot3_ws/install/py_servo

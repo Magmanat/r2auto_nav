@@ -1,0 +1,73 @@
+[0.000000] (-) TimerEvent: {}
+[0.001918] (-) JobUnselected: {'identifier': 'hardware_bringup'}
+[0.002737] (-) JobUnselected: {'identifier': 'py_servo'}
+[0.003770] (-) JobUnselected: {'identifier': 'turtlebot3'}
+[0.004733] (-) JobUnselected: {'identifier': 'turtlebot3_bringup'}
+[0.006079] (-) JobUnselected: {'identifier': 'turtlebot3_description'}
+[0.007710] (-) JobUnselected: {'identifier': 'turtlebot3_example'}
+[0.008093] (-) JobUnselected: {'identifier': 'turtlebot3_node'}
+[0.008363] (-) JobUnselected: {'identifier': 'turtlebot3_teleop'}
+[0.008583] (amg8833_i2c) JobQueued: {'identifier': 'amg8833_i2c', 'dependencies': OrderedDict()}
+[0.012131] (amg8833_i2c) JobStarted: {'identifier': 'amg8833_i2c'}
+[0.098635] (-) TimerEvent: {}
+[0.200809] (-) TimerEvent: {}
+[0.302128] (-) TimerEvent: {}
+[0.403131] (-) TimerEvent: {}
+[0.504142] (-) TimerEvent: {}
+[0.605148] (-) TimerEvent: {}
+[0.706161] (-) TimerEvent: {}
+[0.807185] (-) TimerEvent: {}
+[0.908220] (-) TimerEvent: {}
+[1.009323] (-) TimerEvent: {}
+[1.110406] (-) TimerEvent: {}
+[1.211448] (-) TimerEvent: {}
+[1.312552] (-) TimerEvent: {}
+[1.413590] (-) TimerEvent: {}
+[1.514667] (-) TimerEvent: {}
+[1.615761] (-) TimerEvent: {}
+[1.716929] (-) TimerEvent: {}
+[1.747878] (amg8833_i2c) Command: {'cmd': ['/usr/bin/python3', 'setup.py', 'egg_info', '--egg-base', '../../build/amg8833_i2c', 'build', '--build-base', '/home/ubuntu/turtlebot3_ws/build/amg8833_i2c/build', 'install', '--prefix', '/home/ubuntu/turtlebot3_ws/install/amg8833_i2c', '--record', '/home/ubuntu/turtlebot3_ws/build/amg8833_i2c/install.log', '--single-version-externally-managed'], 'cwd': '/home/ubuntu/turtlebot3_ws/src/amg8833_i2c', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'ubuntu', 'SSH_CLIENT': '192.168.174.6 45510 22', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib', 'MOTD_SHOWN': 'pam', 'HOME': '/home/ubuntu', 'OLDPWD': '/home/ubuntu/turtlebot3_ws/src', 'SSH_TTY': '/dev/pts/0', 'ROS_PYTHON_VERSION': '3', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLCON_PREFIX_PATH': '/home/ubuntu/turtlebot3_ws/install', 'ROS_DISTRO': 'foxy', 'LOGNAME': 'ubuntu', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '2', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/opt/ros/foxy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'ROS_DOMAIN_ID': '33', 'AMENT_PREFIX_PATH': '/home/ubuntu/turtlebot3_ws/install/turtlebot3:/home/ubuntu/turtlebot3_ws/install/turtlebot3_teleop:/home/ubuntu/turtlebot3_ws/install/turtlebot3_bringup:/home/ubuntu/turtlebot3_ws/install/turtlebot3_node:/home/ubuntu/turtlebot3_ws/install/turtlebot3_example:/home/ubuntu/turtlebot3_ws/install/turtlebot3_description:/home/ubuntu/turtlebot3_ws/install/py_servo:/home/ubuntu/turtlebot3_ws/install/hardware_bringup:/opt/ros/foxy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'PWD': '/home/ubuntu/turtlebot3_ws/build/amg8833_i2c', 'OPENCR_PORT': '/dev/ttyACM0', 'TURTLEBOT3_MODEL': 'burger', 'LC_ALL': 'en_US.UTF-8', 'SSH_CONNECTION': '192.168.174.6 45510 192.168.174.104 22', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/ubuntu/turtlebot3_ws/install/amg8833_i2c/lib/python3.8/site-packages:/home/ubuntu/turtlebot3_ws/install/turtlebot3_teleop/lib/python3.8/site-packages:/home/ubuntu/turtlebot3_ws/install/turtlebot3_example/lib/python3.8/site-packages:/home/ubuntu/turtlebot3_ws/install/py_servo/lib/python3.8/site-packages:/home/ubuntu/turtlebot3_ws/install/hardware_bringup/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/home/ubuntu/turtlebot3_ws/install/turtlebot3:/home/ubuntu/turtlebot3_ws/install/turtlebot3_bringup:/home/ubuntu/turtlebot3_ws/install/turtlebot3_node:/home/ubuntu/turtlebot3_ws/install/turtlebot3_description', 'OPENCR_MODEL': 'burger'}, 'shell': False}
+[1.817289] (-) TimerEvent: {}
+[1.918478] (-) TimerEvent: {}
+[2.019502] (-) TimerEvent: {}
+[2.120647] (-) TimerEvent: {}
+[2.221660] (-) TimerEvent: {}
+[2.322754] (-) TimerEvent: {}
+[2.423816] (-) TimerEvent: {}
+[2.524892] (-) TimerEvent: {}
+[2.626000] (-) TimerEvent: {}
+[2.727054] (-) TimerEvent: {}
+[2.828149] (-) TimerEvent: {}
+[2.929231] (-) TimerEvent: {}
+[3.030331] (-) TimerEvent: {}
+[3.131394] (-) TimerEvent: {}
+[3.232507] (-) TimerEvent: {}
+[3.282038] (amg8833_i2c) StdoutLine: {'line': b'running egg_info\n'}
+[3.286070] (amg8833_i2c) StdoutLine: {'line': b'writing ../../build/amg8833_i2c/amg8833_i2c.egg-info/PKG-INFO\n'}
+[3.287888] (amg8833_i2c) StdoutLine: {'line': b'writing dependency_links to ../../build/amg8833_i2c/amg8833_i2c.egg-info/dependency_links.txt\n'}
+[3.289320] (amg8833_i2c) StdoutLine: {'line': b'writing entry points to ../../build/amg8833_i2c/amg8833_i2c.egg-info/entry_points.txt\n'}
+[3.290910] (amg8833_i2c) StdoutLine: {'line': b'writing requirements to ../../build/amg8833_i2c/amg8833_i2c.egg-info/requires.txt\n'}
+[3.292180] (amg8833_i2c) StdoutLine: {'line': b'writing top-level names to ../../build/amg8833_i2c/amg8833_i2c.egg-info/top_level.txt\n'}
+[3.332781] (-) TimerEvent: {}
+[3.433872] (-) TimerEvent: {}
+[3.534907] (-) TimerEvent: {}
+[3.545127] (amg8833_i2c) StdoutLine: {'line': b"reading manifest file '../../build/amg8833_i2c/amg8833_i2c.egg-info/SOURCES.txt'\n"}
+[3.552062] (amg8833_i2c) StdoutLine: {'line': b"writing manifest file '../../build/amg8833_i2c/amg8833_i2c.egg-info/SOURCES.txt'\n"}
+[3.553303] (amg8833_i2c) StdoutLine: {'line': b'running build\n'}
+[3.554291] (amg8833_i2c) StdoutLine: {'line': b'running build_py\n'}
+[3.556013] (amg8833_i2c) StdoutLine: {'line': b'running install\n'}
+[3.561490] (amg8833_i2c) StdoutLine: {'line': b'running install_lib\n'}
+[3.571860] (amg8833_i2c) StdoutLine: {'line': b'running install_data\n'}
+[3.575358] (amg8833_i2c) StdoutLine: {'line': b'running install_egg_info\n'}
+[3.586457] (amg8833_i2c) StdoutLine: {'line': b"removing '/home/ubuntu/turtlebot3_ws/install/amg8833_i2c/lib/python3.8/site-packages/amg8833_i2c-0.0.0-py3.8.egg-info' (and everything under it)\n"}
+[3.589025] (amg8833_i2c) StdoutLine: {'line': b'Copying ../../build/amg8833_i2c/amg8833_i2c.egg-info to /home/ubuntu/turtlebot3_ws/install/amg8833_i2c/lib/python3.8/site-packages/amg8833_i2c-0.0.0-py3.8.egg-info\n'}
+[3.597439] (amg8833_i2c) StdoutLine: {'line': b'running install_scripts\n'}
+[3.635088] (-) TimerEvent: {}
+[3.715987] (amg8833_i2c) StdoutLine: {'line': b'Installing thermal script to /home/ubuntu/turtlebot3_ws/install/amg8833_i2c/lib/amg8833_i2c\n'}
+[3.718619] (amg8833_i2c) StdoutLine: {'line': b"writing list of installed files to '/home/ubuntu/turtlebot3_ws/build/amg8833_i2c/install.log'\n"}
+[3.735368] (-) TimerEvent: {}
+[3.836659] (-) TimerEvent: {}
+[3.892789] (amg8833_i2c) CommandEnded: {'returncode': 0}
+[3.937120] (-) TimerEvent: {}
+[3.978420] (amg8833_i2c) JobEnded: {'identifier': 'amg8833_i2c', 'rc': 0}
+[3.983036] (-) EventReactorShutdown: {}
