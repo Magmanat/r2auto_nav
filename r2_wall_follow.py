@@ -45,13 +45,14 @@ TARGET_target_not_detected_threshhold = 10 #how long you want hot target not det
 
 # variables affecting navigation
 fastspeedchange = 0.18
-slowspeedchange = 0.1
+slowspeedchange = 0.10
 
 turning_speed_wf_fast = 1.0 # Fast turn ideal = 1.0
+turning_speed_wf_medium = 0.65
 turning_speed_wf_slow = 0.4 # Slow turn = 0.4
 
-front_d = 0.37
-side_d = 0.40
+front_d = 0.35
+side_d = 0.35
 leftwallfollowing = 1  # 1=left,  -1=right
 
 target_count_threshhold = 5 # how long you want hot_target to be spotted before activating firing / hot_timer_delay = target_count_threshhold
@@ -439,6 +440,7 @@ class AutoNav(Node):
         # These values were determined by trial and error.
         self.turning_speed_wf_fast = turning_speed_wf_fast * leftwallfollowing# Fast turn ideal = 1.0
         self.turning_speed_wf_slow = turning_speed_wf_slow * leftwallfollowing # Slow turn = 0.4
+        self.turning_speed_wf_medium = turning_speed_wf_medium * leftwallfollowing
         # Set movement speed
         self.forward_speed = fastspeedchange
         self.forward_speed_slow = slowspeedchange
@@ -452,13 +454,13 @@ class AutoNav(Node):
         msg.angular.z = 0.0
         # self.publisher_.publish(msg)
 
-        if  (self.leftfront_dist > self.side_d and self.front_dist > self.front_d and self.rightfront_dist > self.side_d):
+        if  ((self.leftfront_dist > self.side_d) and self.front_dist > self.front_d and self.rightfront_dist > self.side_d):
             print('here')
-            if self.left_dist < 0.15:
+            if self.left_dist < 0.20:
                 print('wall still here')
                 self.wall_following_state = "turn right"
                 msg.linear.x = self.forward_speed
-                msg.angular.z = -self.turning_speed_wf_fast # turn left to find wall
+                msg.angular.z = -self.turning_speed_wf_slow # turn left to find wall
             else:
                 print('wall just disappeared')
                 self.wall_following_state = "search for wall"
@@ -472,12 +474,12 @@ class AutoNav(Node):
 
         elif ((self.leftfront_dist < self.side_d or self.left_dist < self.side_d) and self.front_dist > self.front_d and self.rightfront_dist > self.side_d):
             print('here3')
-            if (self.leftfront_dist < 0.20 or self.left_dist < 0.15):
+            if (self.leftfront_dist < 0.25 or self.left_dist < 0.20):
                 print('left wall close')
                 # Getting too close to the wall
                 self.wall_following_state = "turn right"
                 msg.linear.x = self.forward_speed_slow
-                msg.angular.z = -self.turning_speed_wf_fast
+                msg.angular.z = -self.turning_speed_wf_medium
             else:
                 # Go straight ahead
                 print('left wall far')
@@ -488,8 +490,8 @@ class AutoNav(Node):
         elif self.leftfront_dist > self.side_d and self.front_dist > self.front_d and self.rightfront_dist < self.side_d:
             print('here4')
             self.wall_following_state = "search for wall"
-            msg.linear.x = self.forward_speed
-            msg.angular.z = self.turning_speed_wf_slow  # turn left to find wall
+            msg.linear.x = self.forward_speed_slow
+            msg.angular.z = self.turning_speed_wf_medium  # turn left to find wall
 
         elif self.leftfront_dist < self.side_d and self.front_dist < self.front_d and self.rightfront_dist > self.side_d:
             print('here5')
@@ -508,16 +510,11 @@ class AutoNav(Node):
 
         elif self.leftfront_dist < self.side_d and self.front_dist > self.front_d and self.rightfront_dist < self.side_d:
             print('here8')
-            if (self.leftfront_dist < 0.20):
-                # Getting too close to the wall
-                self.wall_following_state = "turn right"
-                msg.linear.x = self.forward_speed_slow
-                msg.angular.z = -self.turning_speed_wf_fast
-            else:
-                # Go straight ahead
-                self.wall_following_state = "follow wall"
-                msg.linear.x = self.forward_speed
-                msg.angular.z = self.turning_speed_wf_slow
+            # Go straight ahead
+            print("left")
+            self.wall_following_state = "find wall"
+            msg.linear.x = self.forward_speed
+            msg.angular.z = self.turning_speed_wf_slow
 
         else:
             pass
@@ -585,7 +582,7 @@ class AutoNav(Node):
                     print("################")
                     print("moved off")
                     self.moved_off = True
-                if self.is_one_round == False and self.moved_off and (abs(self.Xstart - self.Xpos) < 0.25 and abs(self.Ystart - self.Ypos) < 0.25):
+                if self.is_one_round == False and self.moved_off and (abs(self.Xstart - self.Xpos) < 0.20 and abs(self.Ystart - self.Ypos) < 0.20):
                     print("################")
                     print("################")
                     print("################")
