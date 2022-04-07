@@ -325,6 +325,8 @@ class AutoNav(Node):
 
         self.targeter_count = 0
         self.targeter_count_threshhold = target_count_threshhold
+        self.thermal_time = time.time()
+        self.thermal_targeted_time = 300
         self.target_timer = time.time()
         self.timer_threshhold = hot_timer_delay
 
@@ -582,7 +584,7 @@ class AutoNav(Node):
                     print("################")
                     print("moved off")
                     self.moved_off = True
-                if self.is_one_round == False and self.moved_off and (abs(self.Xstart - self.Xpos) < 0.20 and abs(self.Ystart - self.Ypos) < 0.20):
+                if self.is_one_round == False and (self.moved_off and (abs(self.Xstart - self.Xpos) < 0.2 and abs(self.Ystart - self.Ypos) < 0.2)) or (time.time() - self.target_timer >= self.thermal_targeted_time):
                     print("################")
                     print("################")
                     print("################")
