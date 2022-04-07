@@ -44,15 +44,15 @@ TARGET_target_not_detected_counter = 0 #counter to add up to threshhold
 TARGET_target_not_detected_threshhold = 10 #how long you want hot target not detected to restart finding / TARGET_target_not_detected_delay = TARGET_target_not_detected_threshold
 
 # variables affecting navigation
-fastspeedchange = 0.18
-slowspeedchange = 0.10
+fastspeedchange = 0.18 #0.18
+slowspeedchange = 0.10#0.10
 
 turning_speed_wf_fast = 1.0 # Fast turn ideal = 1.0
-turning_speed_wf_medium = 0.65
+turning_speed_wf_medium = 0.65 #0.65
 turning_speed_wf_slow = 0.4 # Slow turn = 0.4
 
-front_d = 0.35
-side_d = 0.35
+front_d = 0.45
+side_d = 0.45
 leftwallfollowing = 1  # 1=left,  -1=right
 
 target_count_threshhold = 5 # how long you want hot_target to be spotted before activating firing / hot_timer_delay = target_count_threshhold
@@ -491,7 +491,7 @@ class AutoNav(Node):
             print('here4')
             self.wall_following_state = "search for wall"
             msg.linear.x = self.forward_speed_slow
-            msg.angular.z = self.turning_speed_wf_medium  # turn left to find wall
+            msg.angular.z = self.turning_speed_wf_slow  # turn left to find wall
 
         elif self.leftfront_dist < self.side_d and self.front_dist < self.front_d and self.rightfront_dist > self.side_d:
             print('here5')
@@ -596,11 +596,6 @@ class AutoNav(Node):
                 if self.is_loaded and self.is_one_round:
                     print("finding thermal now")
                 if self.is_loaded and self.is_one_round and self.target_presence:
-                #   self.cut_through()
-                  self.stopbot()
-                  print("IM DONE, TIME FOR #######################################################")
-                  break
-                if self.target_presence:
                 #   self.cut_through()
                   self.stopbot()
                   print("IM DONE, TIME FOR #######################################################")
