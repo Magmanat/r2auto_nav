@@ -99,7 +99,7 @@ class FactoryTest(Node):
         done = False
         while not done:
             self.clear()
-            print("Input Y and observe if the turtlebot moves approximately 10cm front, 10cm back\nand then 90 degrees left and 90 degrees right")
+            print("place the bot on the floor with sufficient space for it to move\nthen input Y and observe if the turtlebot moves approximately 10cm front, 10cm back\nand then 90 degrees left and 90 degrees right")
             if input() == 'y':
                 #forward
                 twist.linear.x = 0.2
@@ -133,7 +133,7 @@ class FactoryTest(Node):
         done = False
         while not done:
             self.clear()
-            print("input Y to start the lidar test")
+            print("Ensure that the turtlebot is within 1.5 meters of a wall\nthen input Y to start the lidar test")
             if input() == 'y':
                 done = True
         while (self.laser_range.size == 0):
@@ -158,7 +158,7 @@ class FactoryTest(Node):
         nfc_test_duration = 20
         while not done:
             self.clear()
-            print("place nfc tag below nfc sensor, there is 20 seconds to test the NFC\n" + str(int(time.time() - timenow)))
+            print("place nfc tag below nfc sensor, you have 20 seconds to test the NFC\n" + str(int(time.time() - timenow)))
             rclpy.spin_once(self)
             if self.nfc_presence == True:
                 for i in [3,2,1]:
@@ -179,7 +179,7 @@ class FactoryTest(Node):
         button_test_duration = 20
         while not done:
             self.clear()
-            print("press the button to test, there is 20 seconds to test the button\n" + str(int(time.time() - timenow)))
+            print("press the button to test, you have  20 seconds to test the button\n" + str(int(time.time() - timenow)))
             rclpy.spin_once(self)
             if self.button_presence == True:
                 for i in [3,2,1]:

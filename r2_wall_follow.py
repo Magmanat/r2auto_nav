@@ -172,7 +172,7 @@ class Targeter(Node):
                 print(self.not_detected_counter)
             if self.not_detected_counter >= self.not_detected_threshold:
                 twist = Twist()
-                twist.linear.z = 0.5
+                twist.angular.z = 0.5
                 self.publisher_.publish(twist)
             #return to autonav?
             #thinking of doing a publisher for thermal detection
@@ -420,6 +420,9 @@ class AutoNav(Node):
         # replace 0's with nan
         self.laser_range[self.laser_range==0] = np.Inf
         numinfs = (self.laser_range==np.Inf).sum()
+        print('###################')
+        print(self.laser_range)
+        print('###################')
         if numinfs >= 270:
             self.laser_valid = False
         else:
@@ -430,7 +433,9 @@ class AutoNav(Node):
         # self.get_logger().info('In pick direction:')
         laser_ranges = self.laser_range.tolist()
         # print(min(laser_ranges[46:90]))
-        
+        # print('###################')
+        # print(laser_ranges)
+        # print('###################')
         # self.front_dist = min(laser_ranges[0:14] + laser_ranges[346:])
         self.front_dist = laser_ranges[0]
         self.leftfront_dist = min(laser_ranges[15:45])
