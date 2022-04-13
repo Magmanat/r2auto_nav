@@ -11,6 +11,10 @@ from tf2_ros.buffer import Buffer
 # Easy way to request and receive coordinate frame transform information
 from tf2_ros.transform_listener import TransformListener
 
+
+#This program will publish a topic /map2base which will be the information of the transform from tf /map to /base_link, this will allow
+#us to determine the robots location and rotation in the map.
+
 class Map2Base(Node):
 
     def __init__(self):
