@@ -600,7 +600,7 @@ class AutoNav(Node):
                     print("################")
                     print("moved off")
                     self.moved_off = True
-                if self.is_one_round == False and ((self.moved_off and (abs(self.Xstart - self.Xpos) < 0.2 and abs(self.Ystart - self.Ypos) < 0.2)) or (time.time() - self.target_timer >= self.thermal_targeted_time)):
+                if self.is_one_round == False and ((self.moved_off and (abs(self.Xstart - self.Xpos) < 0.2 and abs(self.Ystart - self.Ypos) < 0.2)) or (time.time() - self.thermal_time >= self.thermal_targeted_time)):
                     print("################")
                     print("################")
                     print("################")
@@ -614,6 +614,11 @@ class AutoNav(Node):
                 if self.is_loaded and self.is_one_round:
                     print("finding thermal now")
                 if self.is_loaded and self.is_one_round and self.target_presence:
+                #   self.cut_through()
+                  self.stopbot()
+                  print("IM DONE, TIME FOR FIRING")
+                  break
+                if self.target_presence:
                 #   self.cut_through()
                   self.stopbot()
                   print("IM DONE, TIME FOR FIRING")
