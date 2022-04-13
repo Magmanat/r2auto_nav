@@ -76,6 +76,9 @@ GE_SCLR_CLR                   = 0b00000110
 def get_i2c_device(address, busnum, i2c_interface=None, **kwargs):
     return i2c_driver(address, busnum, i2c_interface, **kwargs)
 
+
+
+#ros node that publishes the thermal camera array
 class i2c_driver(object):
     def __init__(self, address, busnum, i2c_interface=None):
         self._address = address

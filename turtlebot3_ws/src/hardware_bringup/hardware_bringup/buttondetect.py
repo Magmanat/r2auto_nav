@@ -6,6 +6,8 @@ from gpiozero.pins.pigpio import PiGPIOFactory
 
 
 
+
+#publisher to publish if button press is detected or not
 class Button_publisher(Node):
     
     def __init__(self):
@@ -27,10 +29,6 @@ class Button_publisher(Node):
       self.publisher_.publish(msg)
       
 
-
-        
-
-
 def main(args=None):
     rclpy.init(args=args)
 
@@ -41,7 +39,7 @@ def main(args=None):
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-      scanner.destroy_node()
+      button_publisher.destroy_node()
       rclpy.shutdown()
 
 

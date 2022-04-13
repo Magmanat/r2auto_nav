@@ -41,7 +41,8 @@ TARGET_front_angle = 3 #angle of front to measure distance
 TARGET_moveres = 0.2 #time for sleep when moving
 TARGET_target_not_detected_delay = 0.1 #delay in seconds
 TARGET_target_not_detected_counter = 0 #counter to add up to threshhold
-TARGET_target_not_detected_threshhold = 10 #how long you want hot target not detected to restart finding / TARGET_target_not_detected_delay = TARGET_target_not_detected_threshold
+TARGET_target_not_detected_threshhold = 10 #(how long you want hot target not detected to restart finding) / TARGET_target_not_detected_delay = TARGET_target_not_detected_threshold
+
 
 # variables affecting navigation
 fastspeedchange = 0.2 #0.18
@@ -51,11 +52,10 @@ turning_speed_wf_fast = 1.1 # Fast turn ideal = 1.0
 turning_speed_wf_medium = 0.75 #0.65
 turning_speed_wf_slow = 0.5 # Slow turn = 0.4
 
-front_d = 0.45
-side_d = 0.45
-leftwallfollowing = 1  # 1=left,  -1=right
+front_d = 0.45 #threshhold front distance that robot should not enter
+side_d = 0.45 #threshold side distance that robot should not enter
 
-target_count_threshhold = 5 # how long you want hot_target to be spotted before activating firing / hot_timer_delay = target_count_threshhold
+target_count_threshhold = 5 # (how long you want hot_target to be spotted before activating firing) / hot_timer_delay = target_count_threshhold
 hot_timer_delay = 0.1 # in seconds
 
 
@@ -122,7 +122,7 @@ class Targeter(Node):
         self.not_detected_time = time.time()
 
 
-#function that checks through array if there is anything hot
+#function that checks through array if there is anything within the hot threshhold set
     def detect_target(self):
         max_value = -1.0
         for row in range(len(self.thermal_array)):
@@ -159,8 +159,8 @@ class Targeter(Node):
                     self.stopbot()
                     fire = Bool()
                     fire.data = True
-                    self.firing_pub.publish(fire)
-                    self.destroy_node(self)
+                    self.firing_pub.publish(fire) #start firing
+                    self.destroy_node(self) #destroy this node
             if self.centered == True and self.front_distance > TARGETshoot_distance:
                     #stop this script and move onto shooting script
                 self.robotforward()
@@ -174,10 +174,7 @@ class Targeter(Node):
                 twist = Twist()
                 twist.angular.z = 0.5
                 self.publisher_.publish(twist)
-            #return to autonav?
-            #thinking of doing a publisher for thermal detection
             pass
-
 
     #function to stop bot
     def stopbot(self):
@@ -200,6 +197,7 @@ class Targeter(Node):
         time.sleep(TARGET_moveres)
         self.publisher_.publish(twist)
 
+    #laser_callback is needed to get the front distance from the robot, which will determine when to begin the firing sequence
     def laser_callback(self, msg):
         # create numpy array
         laser_range = list(msg.ranges)
@@ -214,7 +212,7 @@ class Targeter(Node):
         print("This is the front distance")
         print(self.front_distance)
 
-#function checks for hottest region and sends command to rotate by 1 step
+    #function checks for hottest region and sends command to rotate by 1 step
     def center_target(self):
         view = self.thermal_array
         max_value = -1.0
@@ -263,13 +261,14 @@ class AutoNav(Node):
         self.publisher_ = self.create_publisher(Twist,'cmd_vel',10)
         # self.get_logger().info('Created publisher')
         
-        # create subscription to track orientation
+        # create subscription to track coordinate data of base_link in comparison with map frame
         self.map2base_sub = self.create_subscription(
             Pose,
             'map2base',
             self.map2base_callback,
             1)
 
+        # create subscription to get thermal array from thermal camera
         self.subscription = self.create_subscription(
             Float64MultiArray,
             'thermal',
@@ -280,7 +279,8 @@ class AutoNav(Node):
         self.pitch = 0
         self.yaw = 0
         
-        # create subscription to track occupancy
+
+        # create subscription to track occupancy and coordinate data
         self.occ_subscription = self.create_subscription(
             OccupancyGrid,
             'map',
@@ -289,6 +289,7 @@ class AutoNav(Node):
         # self.occ_subscription  # prevent unused variable warning
         self.occdata = np.array([])
         
+
         # create subscription to track lidar
         self.scan_subscription = self.create_subscription(
             LaserScan,
@@ -307,6 +308,8 @@ class AutoNav(Node):
         'button_pressed',
         self.button_callback,
         10)
+
+        #parameters that would be used in auto_nav
         self.resolution = 0.05
         self.nfc_presence = False
         self.button_presence = False
@@ -325,32 +328,34 @@ class AutoNav(Node):
 
         self.targeter_count = 0
         self.targeter_count_threshhold = target_count_threshhold
-        self.thermal_time = time.time()
-        self.thermal_targeted_time = 300
+        self.round_start_time = time.time()
+        self.round_completed_time = 300
         self.target_timer = time.time()
         self.timer_threshhold = hot_timer_delay
 
         
-
+    #returns true if nfc is detected
     def NFC_callback(self,msg):
         if msg.data == True:
             self.nfc_presence = True
         else:
             self.nfc_presence = False
 
+    #returns true if button press is detected
     def button_callback(self,msg):
         if msg.data == True:
             self.button_presence = True
         else:
             self.button_presence = False
 
+    #updates the transform data from map frame to base_link every callback
     def map2base_callback(self, msg):
         # self.get_logger().info('In map2basecallback')
         
         self.mapbase = msg.position
         self.roll, self.pitch, self.yaw = euler_from_quaternion(msg.orientation.x, msg.orientation.y, msg.orientation.z, msg.orientation.w)
 
-
+    #used to find the coordinate of the base_link in the occupancy map by using the Xadjust and Yadjust variables, but since in my use case we dont use occupancy, hence this function is irrelevant
     def occ_callback(self, msg):
         # self.get_logger().info('In occ_callback')
         occdata = np.array(msg.data)
@@ -363,26 +368,17 @@ class AutoNav(Node):
         iheight = msg.info.height
         # calculate total number of bins
         total_bins = iwidth * iheight
-        # log the info
-        # self.get_logger().info('Unmapped: %i Unoccupied: %i Occupied: %i Total: %i' % (occ_counts[0], occ_counts[1], occ_counts[2], total_bins))
 
-        # binnum go from 1 to 3 so we can use uint8
-        # convert into 2D array using column order
+        #save it in mazelayout
         self.mazelayout = np.uint8(binnum.reshape(msg.info.height,msg.info.width))
         self.Xadjust = msg.info.origin.position.x
         self.Yadjust = msg.info.origin.position.y
         self.Xpos = self.mapbase.x
         self.Ypos = self.mapbase.y
-        # self.mazelayout[self.Ypos][self.Xpos] = 6
-        
-        # img2 = Image.fromarray(self.mazelayout)
-        # plt.imshow(img2, cmap='gray', origin='lower')
-        # plt.draw_all()
-        # # # pause to make sure the plot gets created
-        # plt.pause(0.00000000001)
 
 
-#function that checks through array if there is anything hot        
+
+    #function that checks through array if there is anything hot        
     def thermal_callback(self, thermal_array):
         pix_res = (8,8)
         self.thermal_array = np.reshape(thermal_array.data,pix_res)
@@ -407,7 +403,9 @@ class AutoNav(Node):
             self.targeter_count = 0
             self.target_presence = False
 
-
+    #callback to get scan data from the lidar, all 0 data will be treated as infs
+    #had a problem with lidar randomly spitting out more than 3/4 of the scan as infs, causing auto_nav to behave wildly
+    #implemented a laser_valid boolean to check if there is valid data (if less than 3/4 are infs), this only works if the maze is very detailed
     def scan_callback(self, msg):
         self.get_logger().info('In scan_callback')
         # create numpy array
@@ -428,7 +426,7 @@ class AutoNav(Node):
         else:
             self.laser_valid = True
 
-
+    #wall following part of the auto_nav, pick_direction will decide which linear and angular speed to give the robot, based off the current scan data
     def pick_direction(self):
         # self.get_logger().info('In pick direction:')
         laser_ranges = self.laser_range.tolist()
@@ -468,17 +466,20 @@ class AutoNav(Node):
         msg.angular.x = 0.0
         msg.angular.y = 0.0
         msg.angular.z = 0.0
-        # self.publisher_.publish(msg)
+
+
+        #if laserscan data is not valid, do not allow the bot to move
         if self.laser_valid == False:
             msg.linear.x = 0.0
             msg.angular.z = 0.0
+
         elif  ((self.leftfront_dist > self.side_d) and self.front_dist > self.front_d and self.rightfront_dist > self.side_d):
             # print('here')
             if self.left_dist < 0.20:
                 # print('wall still here')
                 self.wall_following_state = "turn right"
                 msg.linear.x = self.forward_speed
-                msg.angular.z = -self.turning_speed_wf_slow # turn left to find wall
+                msg.angular.z = -self.turning_speed_wf_slow # turn right to avoid wall
             else:
                 # print('wall just disappeared')
                 self.wall_following_state = "search for wall"
@@ -540,7 +541,7 @@ class AutoNav(Node):
         # Send velocity command to the robot
         self.publisher_.publish(msg)
 
-
+    #function to stop the bot
     def stopbot(self):
         self.get_logger().info('In stopbot')
         # publish to cmd_vel to move TurtleBot
@@ -550,12 +551,14 @@ class AutoNav(Node):
         # time.sleep(1)
         self.publisher_.publish(twist)
 
+    #function to make the robot stop and wait until the button is pressed
     def loading(self):
         self.stopbot()
         while self.button_presence == False:
             rclpy.spin_once(self)
         self.is_loaded = True
         
+    #function to record the starting position of the bot, to determine if it has moved one round
     def recordposition(self):
         print("######################################")
         print("######################################")
@@ -581,6 +584,8 @@ class AutoNav(Node):
                 print(self.laser_range)
                 rclpy.spin_once(self)
             self.timenow = time.time()
+
+            #beginning of mover node
             while rclpy.ok():
                 # print(time.time())
                 print("target")
@@ -589,9 +594,13 @@ class AutoNav(Node):
                 print("current")
                 print(self.Xpos)
                 print(self.Ypos)
+
+                #record position only after the initial delay, this is to let the robot move out of the starting location before the position is recorded
                 if time.time() - self.timenow > initialdelay and self.recordedinitial == False:
                     self.recordedinitial = True
                     self.recordposition()
+                
+                #check if the robot has moved out of the starting position, this is needed as if we dont check for this, the bot will immediately think it has moved one round the moment it has been recorded
                 if self.moved_off == False and (abs(self.Xstart - self.Xpos) > 0.25 or abs(self.Ystart - self.Ypos) > 0.25) and self.recordedinitial:
                     print("################")
                     print("################")
@@ -600,7 +609,10 @@ class AutoNav(Node):
                     print("################")
                     print("moved off")
                     self.moved_off = True
-                if self.is_one_round == False and ((self.moved_off and (abs(self.Xstart - self.Xpos) < 0.2 and abs(self.Ystart - self.Ypos) < 0.2)) or (time.time() - self.thermal_time >= self.thermal_targeted_time)):
+                
+                #check if the robot has moved back to the starting position, and mark it as one round has moved, or if the robot for some reason is unable to move back
+                #to the starting location, after round_completed_time, it will mark itself as if it has completed one round.
+                if self.is_one_round == False and ((self.moved_off and (abs(self.Xstart - self.Xpos) < 0.2 and abs(self.Ystart - self.Ypos) < 0.2)) or (time.time() - self.round_start_time >= self.round_completed_time)):
                     print("################")
                     print("################")
                     print("################")
@@ -609,22 +621,25 @@ class AutoNav(Node):
                     print("moved one round")
                     self.is_one_round = True
 
+                #if bot has not been loaded yet, and nfc has been detected, it will enter its loading phase
                 if self.is_loaded == False and self.nfc_presence == True:
                   self.loading()
+                
+                #if bot has been loaded and it has moved one round, print a statement that the robot is finding thermal now 
                 if self.is_loaded and self.is_one_round:
                     print("finding thermal now")
+                
+                #if bot is finding thermal now and it has detected the hot target, stop the bot, then break the move() loop and move on to the aiming phase
                 if self.is_loaded and self.is_one_round and self.target_presence:
                 #   self.cut_through()
                   self.stopbot()
                   print("IM DONE, TIME FOR FIRING")
                   break
-                if self.target_presence:
-                #   self.cut_through()
-                  self.stopbot()
-                  print("IM DONE, TIME FOR FIRING")
-                  break
+
+                #pick a direction for this loop, for the bot to move
                 self.pick_direction()
-                # allow the callback functions to run
+
+                # allow the callback functions to run to update all the data
                 rclpy.spin_once(self)
 
         except Exception as e:
@@ -640,19 +655,17 @@ def main(args=None):
     rclpy.init(args=args)
     auto_nav = AutoNav()
     targeter = Targeter()
+
+    #start auto_nav
     auto_nav.mover()
     auto_nav.destroy_node()
-    # create matplotlib figure
-    # plt.ion()
-    # plt.show()
 
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
+
+    #start the aiming phase
     rclpy.spin(targeter)
     targeter.destroy_node()
     
-        #do some thermal nav node and shooting node here
+    #finally, shutdown the script
     rclpy.shutdown()
 
 

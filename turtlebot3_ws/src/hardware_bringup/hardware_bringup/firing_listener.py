@@ -10,6 +10,7 @@ import time
 
 
 
+#ros node that will start firing sequence when it subscribes to the topic /fire and it is true
 class Firingnode(Node):
     
     def __init__(self):

@@ -23,6 +23,8 @@ import RPi.GPIO as GPIO
 from .submodules import *
 
 
+
+#publisher to publish if nfc is detected or not
 class NFCPublisher(Node):
 
     def __init__(self):
