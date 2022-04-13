@@ -13,10 +13,8 @@ class Button_publisher(Node):
         self.publisher_ = self.create_publisher(Bool, 'button_pressed', 10)
         timer_period = 0.01  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
-
-        factory = PiGPIOFactory()
-        self.buttonpin = 17
-        self.b = GPIO.Button(self.buttonpin,pin_factory=factory)
+        self.buttonpin = 26
+        self.b = GPIO.Button(self.buttonpin)
 
         
 

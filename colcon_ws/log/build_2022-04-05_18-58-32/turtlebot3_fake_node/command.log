@@ -1,0 +1,4 @@
+Invoking command in '/home/prince/colcon_ws/build/turtlebot3_fake_node': /usr/bin/cmake --build /home/prince/colcon_ws/build/turtlebot3_fake_node -- -j16 -l16
+Invoked command in '/home/prince/colcon_ws/build/turtlebot3_fake_node' returned '0': /usr/bin/cmake --build /home/prince/colcon_ws/build/turtlebot3_fake_node -- -j16 -l16
+Invoking command in '/home/prince/colcon_ws/build/turtlebot3_fake_node': /usr/bin/cmake --install /home/prince/colcon_ws/build/turtlebot3_fake_node
+Invoked command in '/home/prince/colcon_ws/build/turtlebot3_fake_node' returned '0': /usr/bin/cmake --install /home/prince/colcon_ws/build/turtlebot3_fake_node

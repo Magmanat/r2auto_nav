@@ -1,0 +1,97 @@
+[1.109s] Invoking command in '/home/prince/colcon_ws/src/auto_nav': PYTHONPATH=/home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/auto_nav build --build-base /home/prince/colcon_ws/build/auto_nav/build install --prefix /home/prince/colcon_ws/install/auto_nav --record /home/prince/colcon_ws/build/auto_nav/install.log --single-version-externally-managed
+[1.394s] running egg_info
+[1.395s] creating ../../build/auto_nav/auto_nav.egg-info
+[1.395s] writing ../../build/auto_nav/auto_nav.egg-info/PKG-INFO
+[1.395s] writing dependency_links to ../../build/auto_nav/auto_nav.egg-info/dependency_links.txt
+[1.395s] writing entry points to ../../build/auto_nav/auto_nav.egg-info/entry_points.txt
+[1.395s] writing requirements to ../../build/auto_nav/auto_nav.egg-info/requires.txt
+[1.396s] writing top-level names to ../../build/auto_nav/auto_nav.egg-info/top_level.txt
+[1.400s] writing manifest file '../../build/auto_nav/auto_nav.egg-info/SOURCES.txt'
+[1.447s] reading manifest file '../../build/auto_nav/auto_nav.egg-info/SOURCES.txt'
+[1.449s] writing manifest file '../../build/auto_nav/auto_nav.egg-info/SOURCES.txt'
+[1.449s] running build
+[1.449s] running build_py
+[1.450s] creating /home/prince/colcon_ws/build/auto_nav/build
+[1.450s] creating /home/prince/colcon_ws/build/auto_nav/build/lib
+[1.451s] creating /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.451s] copying auto_nav/r2occupancy2.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.451s] copying auto_nav/r2occupancy.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.452s] copying auto_nav/r2auto_nav.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.452s] copying auto_nav/r2auto_nav2.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.452s] copying auto_nav/r2scanner.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.452s] copying auto_nav/thermal_interp.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.452s] copying auto_nav/r2auto_nav3_real.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.452s] copying auto_nav/thermal_publisher.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.452s] copying auto_nav/r2_snake.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.453s] copying auto_nav/r2targeting1.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.453s] copying auto_nav/thermal_listener.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.453s] copying auto_nav/r2auto_nav3_gazebo.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.453s] copying auto_nav/r2moverotate.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.453s] copying auto_nav/__init__.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.453s] copying auto_nav/r2_wall_follow.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.453s] copying auto_nav/map2base.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.453s] copying auto_nav/r2mover.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[1.454s] running install
+[1.455s] running install_lib
+[1.456s] creating /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.456s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/r2occupancy2.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.456s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/r2occupancy.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.456s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/r2auto_nav.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.457s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/r2auto_nav2.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.457s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/r2scanner.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.457s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/thermal_interp.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.457s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/r2auto_nav3_real.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.457s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/thermal_publisher.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.458s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/r2_snake.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.458s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/r2targeting1.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.458s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/thermal_listener.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.458s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/r2auto_nav3_gazebo.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.459s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/r2moverotate.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.459s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/__init__.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.459s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/r2_wall_follow.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.459s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/map2base.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.459s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/r2mover.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[1.460s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2occupancy2.py to r2occupancy2.cpython-38.pyc
+[1.464s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2occupancy.py to r2occupancy.cpython-38.pyc
+[1.466s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2auto_nav.py to r2auto_nav.cpython-38.pyc
+[1.468s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2auto_nav2.py to r2auto_nav2.cpython-38.pyc
+[1.473s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2scanner.py to r2scanner.cpython-38.pyc
+[1.475s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/thermal_interp.py to thermal_interp.cpython-38.pyc
+[1.475s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2auto_nav3_real.py to r2auto_nav3_real.cpython-38.pyc
+[1.479s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/thermal_publisher.py to thermal_publisher.cpython-38.pyc
+[1.481s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2_snake.py to r2_snake.cpython-38.pyc
+[1.486s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2targeting1.py to r2targeting1.cpython-38.pyc
+[1.487s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/thermal_listener.py to thermal_listener.cpython-38.pyc
+[1.488s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2auto_nav3_gazebo.py to r2auto_nav3_gazebo.cpython-38.pyc
+[1.492s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2moverotate.py to r2moverotate.cpython-38.pyc
+[1.494s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/__init__.py to __init__.cpython-38.pyc
+[1.495s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2_wall_follow.py to r2_wall_follow.cpython-38.pyc
+[1.500s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/map2base.py to map2base.cpython-38.pyc
+[1.501s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2mover.py to r2mover.cpython-38.pyc
+[1.502s] running install_data
+[1.503s] creating /home/prince/colcon_ws/install/auto_nav/share/ament_index
+[1.503s] creating /home/prince/colcon_ws/install/auto_nav/share/ament_index/resource_index
+[1.503s] creating /home/prince/colcon_ws/install/auto_nav/share/ament_index/resource_index/packages
+[1.504s] copying resource/auto_nav -> /home/prince/colcon_ws/install/auto_nav/share/ament_index/resource_index/packages
+[1.504s] copying package.xml -> /home/prince/colcon_ws/install/auto_nav/share/auto_nav
+[1.504s] copying launch/r2auto_nav2.launch.py -> /home/prince/colcon_ws/install/auto_nav/share/auto_nav
+[1.504s] running install_egg_info
+[1.506s] Copying ../../build/auto_nav/auto_nav.egg-info to /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav-0.0.0-py3.8.egg-info
+[1.507s] running install_scripts
+[1.537s] Installing map2base script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.537s] Installing r2auto_nav script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.538s] Installing r2auto_nav2 script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.538s] Installing r2auto_nav3_gazebo script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.538s] Installing r2auto_nav3_real script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.538s] Installing r2mover script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.539s] Installing r2moverotate script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.539s] Installing r2occupancy script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.539s] Installing r2occupancy2 script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.539s] Installing r2scanner script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.539s] Installing snake script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.539s] Installing targeter script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.539s] Installing thermal_interp script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.540s] Installing thermal_listener script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.540s] Installing wall_follow script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[1.540s] writing list of installed files to '/home/prince/colcon_ws/build/auto_nav/install.log'
+[1.611s] Invoked command in '/home/prince/colcon_ws/src/auto_nav' returned '0': PYTHONPATH=/home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/auto_nav build --build-base /home/prince/colcon_ws/build/auto_nav/build install --prefix /home/prince/colcon_ws/install/auto_nav --record /home/prince/colcon_ws/build/auto_nav/install.log --single-version-externally-managed

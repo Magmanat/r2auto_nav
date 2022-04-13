@@ -1,3 +1,0 @@
-[console_scripts]
-thermal = amg8833_i2c.thermal_publisher:main
-

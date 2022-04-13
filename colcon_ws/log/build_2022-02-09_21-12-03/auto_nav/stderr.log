@@ -1,0 +1,5 @@
+  File "/home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2auto_nav2.py", line 183
+    self.Xpos = int(np.rint((trans.transform.translation.x - msg.info.origin.position.x)/self.resolution)))
+                                                                                                          ^
+SyntaxError: unmatched ')'
+

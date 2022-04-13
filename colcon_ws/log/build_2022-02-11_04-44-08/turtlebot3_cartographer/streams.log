@@ -1,0 +1,49 @@
+[0.540s] Invoking command in '/home/prince/colcon_ws/build/turtlebot3_cartographer': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/prince/colcon_ws/install/py_pubsub:/home/prince/colcon_ws/install/auto_nav:/opt/ros/foxy /usr/bin/cmake /home/prince/colcon_ws/src/turtlebot3_simulations/turtlebot3_cartographer2 -DCMAKE_INSTALL_PREFIX=/home/prince/colcon_ws/install/turtlebot3_cartographer
+[0.682s] -- The C compiler identification is GNU 9.3.0
+[0.798s] -- The CXX compiler identification is GNU 9.3.0
+[0.810s] -- Check for working C compiler: /usr/bin/cc
+[0.891s] -- Check for working C compiler: /usr/bin/cc -- works
+[0.892s] -- Detecting C compiler ABI info
+[0.976s] -- Detecting C compiler ABI info - done
+[0.987s] -- Detecting C compile features
+[0.988s] -- Detecting C compile features - done
+[0.991s] -- Check for working CXX compiler: /usr/bin/c++
+[1.091s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[1.092s] -- Detecting CXX compiler ABI info
+[1.185s] -- Detecting CXX compiler ABI info - done
+[1.196s] -- Detecting CXX compile features
+[1.196s] -- Detecting CXX compile features - done
+[1.199s] -- Found ament_cmake: 0.9.9 (/opt/ros/foxy/share/ament_cmake/cmake)
+[1.231s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+[1.231s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[1.557s] -- Configuring done
+[1.561s] -- Generating done
+[1.562s] -- Build files have been written to: /home/prince/colcon_ws/build/turtlebot3_cartographer
+[1.567s] Invoked command in '/home/prince/colcon_ws/build/turtlebot3_cartographer' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/prince/colcon_ws/install/py_pubsub:/home/prince/colcon_ws/install/auto_nav:/opt/ros/foxy /usr/bin/cmake /home/prince/colcon_ws/src/turtlebot3_simulations/turtlebot3_cartographer2 -DCMAKE_INSTALL_PREFIX=/home/prince/colcon_ws/install/turtlebot3_cartographer
+[1.569s] Invoking command in '/home/prince/colcon_ws/build/turtlebot3_cartographer': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/prince/colcon_ws/install/py_pubsub:/home/prince/colcon_ws/install/auto_nav:/opt/ros/foxy /usr/bin/cmake --build /home/prince/colcon_ws/build/turtlebot3_cartographer -- -j16 -l16
+[1.625s] Invoked command in '/home/prince/colcon_ws/build/turtlebot3_cartographer' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/prince/colcon_ws/install/py_pubsub:/home/prince/colcon_ws/install/auto_nav:/opt/ros/foxy /usr/bin/cmake --build /home/prince/colcon_ws/build/turtlebot3_cartographer -- -j16 -l16
+[1.660s] Invoking command in '/home/prince/colcon_ws/build/turtlebot3_cartographer': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/prince/colcon_ws/install/py_pubsub:/home/prince/colcon_ws/install/auto_nav:/opt/ros/foxy /usr/bin/cmake --install /home/prince/colcon_ws/build/turtlebot3_cartographer
+[1.677s] -- Install configuration: ""
+[1.677s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/config
+[1.678s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/config/turtlebot3_lds_2d.lua
+[1.678s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/launch
+[1.678s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/launch/cartographer.launch.py
+[1.678s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/launch/occupancy_grid.launch.py
+[1.678s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/rviz
+[1.678s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/rviz/tb3_cartographer.rviz
+[1.678s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/ament_index/resource_index/package_run_dependencies/turtlebot3_cartographer
+[1.678s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/ament_index/resource_index/parent_prefix_path/turtlebot3_cartographer
+[1.678s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/environment/ament_prefix_path.sh
+[1.679s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/environment/ament_prefix_path.dsv
+[1.679s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/environment/path.sh
+[1.679s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/environment/path.dsv
+[1.679s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/local_setup.bash
+[1.679s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/local_setup.sh
+[1.679s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/local_setup.zsh
+[1.679s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/local_setup.dsv
+[1.679s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/package.dsv
+[1.679s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/ament_index/resource_index/packages/turtlebot3_cartographer
+[1.679s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/cmake/turtlebot3_cartographerConfig.cmake
+[1.679s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/cmake/turtlebot3_cartographerConfig-version.cmake
+[1.679s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_cartographer/share/turtlebot3_cartographer/package.xml
+[1.683s] Invoked command in '/home/prince/colcon_ws/build/turtlebot3_cartographer' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/prince/colcon_ws/install/py_pubsub:/home/prince/colcon_ws/install/auto_nav:/opt/ros/foxy /usr/bin/cmake --install /home/prince/colcon_ws/build/turtlebot3_cartographer

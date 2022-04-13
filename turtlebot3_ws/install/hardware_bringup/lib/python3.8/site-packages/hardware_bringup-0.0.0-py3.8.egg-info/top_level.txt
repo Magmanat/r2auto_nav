@@ -1,2 +1,0 @@
-hardware_bringup
-hardware_bringup/submodules

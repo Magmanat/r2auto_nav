@@ -1,0 +1,30 @@
+[1.598s] Invoking command in '/home/prince/colcon_ws/src/auto_nav': PYTHONPATH=/home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/auto_nav build --build-base /home/prince/colcon_ws/build/auto_nav/build install --prefix /home/prince/colcon_ws/install/auto_nav --record /home/prince/colcon_ws/build/auto_nav/install.log --single-version-externally-managed
+[1.963s] running egg_info
+[1.964s] writing ../../build/auto_nav/auto_nav.egg-info/PKG-INFO
+[1.965s] writing dependency_links to ../../build/auto_nav/auto_nav.egg-info/dependency_links.txt
+[1.965s] writing entry points to ../../build/auto_nav/auto_nav.egg-info/entry_points.txt
+[1.965s] writing requirements to ../../build/auto_nav/auto_nav.egg-info/requires.txt
+[1.966s] writing top-level names to ../../build/auto_nav/auto_nav.egg-info/top_level.txt
+[2.010s] reading manifest file '../../build/auto_nav/auto_nav.egg-info/SOURCES.txt'
+[2.010s] writing manifest file '../../build/auto_nav/auto_nav.egg-info/SOURCES.txt'
+[2.011s] running build
+[2.011s] running build_py
+[2.011s] copying auto_nav/r2auto_nav2.py -> /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav
+[2.012s] running install
+[2.013s] running install_lib
+[2.015s] copying /home/prince/colcon_ws/build/auto_nav/build/lib/auto_nav/r2auto_nav2.py -> /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav
+[2.015s] byte-compiling /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2auto_nav2.py to r2auto_nav2.cpython-38.pyc
+[2.023s] running install_data
+[2.024s] running install_egg_info
+[2.028s] removing '/home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav-0.0.0-py3.8.egg-info' (and everything under it)
+[2.029s] Copying ../../build/auto_nav/auto_nav.egg-info to /home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav-0.0.0-py3.8.egg-info
+[2.032s] running install_scripts
+[2.068s] Installing r2auto_nav script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[2.069s] Installing r2auto_nav2 script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[2.070s] Installing r2mover script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[2.070s] Installing r2moverotate script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[2.071s] Installing r2occupancy script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[2.071s] Installing r2occupancy2 script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[2.072s] Installing r2scanner script to /home/prince/colcon_ws/install/auto_nav/lib/auto_nav
+[2.073s] writing list of installed files to '/home/prince/colcon_ws/build/auto_nav/install.log'
+[2.184s] Invoked command in '/home/prince/colcon_ws/src/auto_nav' returned '0': PYTHONPATH=/home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/auto_nav build --build-base /home/prince/colcon_ws/build/auto_nav/build install --prefix /home/prince/colcon_ws/install/auto_nav --record /home/prince/colcon_ws/build/auto_nav/install.log --single-version-externally-managed

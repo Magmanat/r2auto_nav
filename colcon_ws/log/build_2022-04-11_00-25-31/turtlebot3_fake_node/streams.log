@@ -1,0 +1,36 @@
+[0.065s] Invoking command in '/home/prince/colcon_ws/build/turtlebot3_fake_node': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/prince/colcon_ws/install/py_pubsub:/home/prince/colcon_ws/install/auto_nav:/opt/ros/foxy /usr/bin/cmake --build /home/prince/colcon_ws/build/turtlebot3_fake_node -- -j16 -l16
+[0.595s] [100%] Built target turtlebot3_fake_node
+[0.598s] Invoked command in '/home/prince/colcon_ws/build/turtlebot3_fake_node' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/prince/colcon_ws/install/py_pubsub:/home/prince/colcon_ws/install/auto_nav:/opt/ros/foxy /usr/bin/cmake --build /home/prince/colcon_ws/build/turtlebot3_fake_node -- -j16 -l16
+[0.642s] Invoking command in '/home/prince/colcon_ws/build/turtlebot3_fake_node': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/prince/colcon_ws/install/py_pubsub:/home/prince/colcon_ws/install/auto_nav:/opt/ros/foxy /usr/bin/cmake --install /home/prince/colcon_ws/build/turtlebot3_fake_node
+[0.654s] -- Install configuration: ""
+[0.654s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/lib/turtlebot3_fake_node/turtlebot3_fake_node
+[0.654s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/launch
+[0.654s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/launch/rviz2.launch.py
+[0.655s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/launch/turtlebot3_fake_node.launch.py
+[0.655s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/param
+[0.655s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/param/waffle_pi.yaml
+[0.656s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/param/burger.yaml
+[0.658s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/param/waffle.yaml
+[0.658s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/rviz
+[0.659s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/rviz/model.rviz
+[0.659s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/include/
+[0.659s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/include//turtlebot3_fake_node
+[0.659s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/include//turtlebot3_fake_node/turtlebot3_fake_node.hpp
+[0.660s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/ament_index/resource_index/package_run_dependencies/turtlebot3_fake_node
+[0.660s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/ament_index/resource_index/parent_prefix_path/turtlebot3_fake_node
+[0.661s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/environment/ament_prefix_path.sh
+[0.661s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/environment/ament_prefix_path.dsv
+[0.661s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/environment/path.sh
+[0.661s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/environment/path.dsv
+[0.662s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/local_setup.bash
+[0.664s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/local_setup.sh
+[0.665s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/local_setup.zsh
+[0.665s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/local_setup.dsv
+[0.665s] -- Installing: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/package.dsv
+[0.665s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/ament_index/resource_index/packages/turtlebot3_fake_node
+[0.665s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.665s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.665s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/cmake/turtlebot3_fake_nodeConfig.cmake
+[0.665s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/cmake/turtlebot3_fake_nodeConfig-version.cmake
+[0.665s] -- Up-to-date: /home/prince/colcon_ws/install/turtlebot3_fake_node/share/turtlebot3_fake_node/package.xml
+[0.666s] Invoked command in '/home/prince/colcon_ws/build/turtlebot3_fake_node' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/prince/colcon_ws/install/py_pubsub:/home/prince/colcon_ws/install/auto_nav:/opt/ros/foxy /usr/bin/cmake --install /home/prince/colcon_ws/build/turtlebot3_fake_node

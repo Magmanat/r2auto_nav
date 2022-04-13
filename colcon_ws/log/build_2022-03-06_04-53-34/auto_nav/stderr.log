@@ -1,0 +1,5 @@
+  File "/home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2_wall_follow.py", line 405
+    print(len(self.mazelayout) * self.resolution - 2.0))
+                                                       ^
+SyntaxError: unmatched ')'
+

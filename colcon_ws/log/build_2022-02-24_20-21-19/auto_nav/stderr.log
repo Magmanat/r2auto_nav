@@ -1,0 +1,5 @@
+  File "/home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2_snake.py", line 185
+    current_yaw = (self.yaw  / np.pi) * 180)
+                                           ^
+SyntaxError: unmatched ')'
+

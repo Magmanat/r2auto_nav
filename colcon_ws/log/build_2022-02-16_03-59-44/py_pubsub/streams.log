@@ -1,0 +1,22 @@
+[1.551s] Invoking command in '/home/prince/colcon_ws/src/py_pubsub': PYTHONPATH=/home/prince/colcon_ws/install/py_pubsub/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/py_pubsub build --build-base /home/prince/colcon_ws/build/py_pubsub/build install --prefix /home/prince/colcon_ws/install/py_pubsub --record /home/prince/colcon_ws/build/py_pubsub/install.log --single-version-externally-managed
+[1.858s] running egg_info
+[1.859s] writing ../../build/py_pubsub/py_pubsub.egg-info/PKG-INFO
+[1.860s] writing dependency_links to ../../build/py_pubsub/py_pubsub.egg-info/dependency_links.txt
+[1.861s] writing entry points to ../../build/py_pubsub/py_pubsub.egg-info/entry_points.txt
+[1.861s] writing requirements to ../../build/py_pubsub/py_pubsub.egg-info/requires.txt
+[1.862s] writing top-level names to ../../build/py_pubsub/py_pubsub.egg-info/top_level.txt
+[1.910s] reading manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'
+[1.912s] writing manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'
+[1.914s] running build
+[1.914s] running build_py
+[1.914s] running install
+[1.916s] running install_lib
+[1.919s] running install_data
+[1.919s] running install_egg_info
+[1.923s] removing '/home/prince/colcon_ws/install/py_pubsub/lib/python3.8/site-packages/py_pubsub-0.0.0-py3.8.egg-info' (and everything under it)
+[1.924s] Copying ../../build/py_pubsub/py_pubsub.egg-info to /home/prince/colcon_ws/install/py_pubsub/lib/python3.8/site-packages/py_pubsub-0.0.0-py3.8.egg-info
+[1.926s] running install_scripts
+[1.965s] Installing listener script to /home/prince/colcon_ws/install/py_pubsub/lib/py_pubsub
+[1.966s] Installing talker script to /home/prince/colcon_ws/install/py_pubsub/lib/py_pubsub
+[1.967s] writing list of installed files to '/home/prince/colcon_ws/build/py_pubsub/install.log'
+[2.051s] Invoked command in '/home/prince/colcon_ws/src/py_pubsub' returned '0': PYTHONPATH=/home/prince/colcon_ws/install/py_pubsub/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/py_pubsub build --build-base /home/prince/colcon_ws/build/py_pubsub/build install --prefix /home/prince/colcon_ws/install/py_pubsub --record /home/prince/colcon_ws/build/py_pubsub/install.log --single-version-externally-managed
