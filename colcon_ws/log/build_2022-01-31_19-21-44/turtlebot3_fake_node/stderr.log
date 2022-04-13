@@ -1,3 +1,0 @@
-make[2]: *** [CMakeFiles/turtlebot3_fake_node.dir/build.make:63: CMakeFiles/turtlebot3_fake_node.dir/src/turtlebot3_fake_node.cpp.o] Interrupt
-make[1]: *** [CMakeFiles/Makefile2:78: CMakeFiles/turtlebot3_fake_node.dir/all] Interrupt
-make: *** [Makefile:141: all] Interrupt

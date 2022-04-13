@@ -1,5 +1,0 @@
-  File "/home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2auto_nav4_snake.py", line 59
-    roll_x = math.atan2(t0, t1)left
-                               ^
-SyntaxError: invalid syntax
-

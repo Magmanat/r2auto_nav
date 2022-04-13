@@ -1,4 +1,0 @@
-Invoking command in '/home/prince/colcon_ws/build/turtlebot3_gazebo': /usr/bin/cmake --build /home/prince/colcon_ws/build/turtlebot3_gazebo -- -j16 -l16
-Invoked command in '/home/prince/colcon_ws/build/turtlebot3_gazebo' returned '0': /usr/bin/cmake --build /home/prince/colcon_ws/build/turtlebot3_gazebo -- -j16 -l16
-Invoking command in '/home/prince/colcon_ws/build/turtlebot3_gazebo': /usr/bin/cmake --install /home/prince/colcon_ws/build/turtlebot3_gazebo
-Invoked command in '/home/prince/colcon_ws/build/turtlebot3_gazebo' returned '0': /usr/bin/cmake --install /home/prince/colcon_ws/build/turtlebot3_gazebo

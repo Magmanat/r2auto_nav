@@ -1,5 +1,0 @@
-  File "/home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2_wall_follow.py", line 587
-    if self.is_one_round == False (and self.moved_off and (abs(self.Xstart - self.Xpos) < 0.8 and abs(self.Ystart - self.Ypos) < 0.8)) or (time.time() - self.target_timer >= self.thermal_targeted_time):
-                                   ^
-SyntaxError: invalid syntax
-

@@ -1,5 +1,0 @@
-  File "/home/prince/colcon_ws/install/auto_nav/lib/python3.8/site-packages/auto_nav/r2auto_nav2.py", line 189
-    self.mazelayout[int(np.rint(((i[1] - msg.info.origin.position.y)/self.resolution))))][int(np.rint(((i[0] - msg.info.origin.position.x)/self.resolution)))] = 3
-                                                                                       ^
-SyntaxError: closing parenthesis ')' does not match opening parenthesis '['
-
