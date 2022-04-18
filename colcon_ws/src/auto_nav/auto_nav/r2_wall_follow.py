@@ -39,9 +39,7 @@ TARGET_hotthreshhold = 31 #target temperature
 TARGETshoot_distance = 0.45 #distance from center of lidar to front before shooting
 TARGET_front_angle = 3 #angle of front to measure distance
 TARGET_moveres = 0.2 #time for sleep when moving
-TARGET_target_not_detected_delay = 0.1 #delay in seconds
-TARGET_target_not_detected_counter = 0 #counter to add up to threshhold
-TARGET_target_not_detected_threshhold = 10 #(how long you want hot target not detected to restart finding) / TARGET_target_not_detected_delay = TARGET_target_not_detected_threshold
+TARGET_target_not_detected_threshhold = 2 #How long in seconds before target considered as not detected
 
 
 # variables affecting navigation
@@ -116,8 +114,6 @@ class Targeter(Node):
         self.target_presence = False
         self.front_distance = 100
         self.centered = False
-        self.not_detected_delay = TARGET_target_not_detected_delay
-        self.not_detected_counter = TARGET_target_not_detected_counter
         self.not_detected_threshold = TARGET_target_not_detected_threshhold
         self.not_detected_time = time.time()
 
@@ -148,7 +144,7 @@ class Targeter(Node):
         self.thermal_array = np.reshape(thermal_array.data,pix_res)
         self.detect_target()
         if self.target_presence == True:
-            self.not_detected_counter = 0
+            self.not_detected_time = time.time()
             self.stopbot()
             print("Target Detected, Stop Bot")
             self.center_target()
@@ -166,11 +162,7 @@ class Targeter(Node):
                 self.robotforward()
         else:
             print("Target Not Detected")
-            if time.time() - self.not_detected_time >= self.not_detected_delay:
-                self.not_detected_time = time.time()
-                self.not_detected_counter += 1
-                print(self.not_detected_counter)
-            if self.not_detected_counter >= self.not_detected_threshold:
+            if time.time() - self.not_detected_time >= self.not_detected_threshold:
                 twist = Twist()
                 twist.angular.z = 0.5
                 self.publisher_.publish(twist)
