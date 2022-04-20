@@ -148,7 +148,10 @@ class Targeter(Node):
             self.stopbot()
             print("Target Detected, Stop Bot")
             self.center_target()
-            if (self.front_distance < TARGETshoot_distance):
+            if self.centered == True and self.front_distance > TARGETshoot_distance:
+                    #stop this script and move onto shooting script
+                self.robotforward()
+            else if (self.front_distance < TARGETshoot_distance):
                 if self.centered == False:
                     self.center_target()
                 else:
@@ -157,9 +160,6 @@ class Targeter(Node):
                     fire.data = True
                     self.firing_pub.publish(fire) #start firing
                     self.destroy_node(self) #destroy this node
-            if self.centered == True and self.front_distance > TARGETshoot_distance:
-                    #stop this script and move onto shooting script
-                self.robotforward()
         else:
             print("Target Not Detected")
             if time.time() - self.not_detected_time >= self.not_detected_threshold:
