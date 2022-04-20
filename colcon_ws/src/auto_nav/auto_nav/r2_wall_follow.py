@@ -151,7 +151,7 @@ class Targeter(Node):
             if self.centered == True and self.front_distance > TARGETshoot_distance:
                     #stop this script and move onto shooting script
                 self.robotforward()
-            else if (self.front_distance < TARGETshoot_distance):
+            elif (self.front_distance < TARGETshoot_distance):
                 if self.centered == False:
                     self.center_target()
                 else:
