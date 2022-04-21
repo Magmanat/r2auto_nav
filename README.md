@@ -12,6 +12,7 @@ Please follow our step by step guide to start up your system. We are assuming th
  1. Follow the instructions here to setup your laptop and turtlebot https://emanual.robotis.com/docs/en/platform/turtlebot3/quick-start/
  2. Follow this for instructions on setting up i2c communication on the turtlebot's raspberry pi https://ask.wingware.com/question/3/i2c-problem-with-remote-raspberry-pi/
  3. Follow this for instructions on setting up gpiozero and pigpio pin factory (so that the servo used will not spasm) https://gpiozero.readthedocs.io/en/stable/remote_gpio.html
+  4. Check our our /Hardware folder for the schematics of the pcbs that we use to replicate our robot system. **IMPORTANT! FOR OUR 12V SUPPLY AS STATED IN OUR RPI HAT PCB, WE USED 5V INSTEAD DUE TO 12V SPINNING OUR MOTORS TOO FAST AND CAUSING OSCILLATIONS ON OUR ROBOT**
 
 
 
