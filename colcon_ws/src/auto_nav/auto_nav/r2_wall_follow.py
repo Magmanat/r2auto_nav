@@ -43,12 +43,12 @@ TARGET_target_not_detected_threshhold = 2 #How long in seconds before target con
 
 
 # variables affecting navigation
-fastspeedchange = 0.2 #0.18
-slowspeedchange = 0.12#0.10
+fastspeedchange = 0.2 #speed when bot moving fast linear speed
+slowspeedchange = 0.12 #speed when bot moving slow linear speed
 
-turning_speed_wf_fast = 1.1 # Fast turn ideal = 1.0
-turning_speed_wf_medium = 0.75 #0.65
-turning_speed_wf_slow = 0.5 # Slow turn = 0.4
+turning_speed_wf_fast = 1.1 #fast turning speed for bot
+turning_speed_wf_medium = 0.75 #medium turning speed for bot
+turning_speed_wf_slow = 0.5 #slow turning speed for bot
 
 front_d = 0.45 #threshhold front distance that robot should not enter
 side_d = 0.45 #threshold side distance that robot should not enter
