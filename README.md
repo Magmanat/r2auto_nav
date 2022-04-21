@@ -1,3 +1,4 @@
+
 # r2auto_nav
 ROS2 auto_nav code for EG2310, sem2 AY21/22
 
@@ -75,6 +76,34 @@ Ensure that the transforms are properly being published by observing the termina
     ros2 run auto_nav wall_follow
 Finally, after running this command, the robot should move around and perform its mission autonomously, moving around the maze and stopping at an nfc loading bay, which it will then stop and wait to be loaded and button to be pressed to continue with its mission. After moving one entire round around the maze, and also being loaded, it will then search for a thermal target, which when found, the turtlebot would start centering towards the target and finally when the target is approximately 15 cm away from the turtlebot, it would stop and start the firing sequence.
 
+## Parameters that affect operation of the robot
+From lines 35 to 57 of /colcon_ws/src/auto_nav/auto_nav/r2_wall_follow.py
+
+The explanation of all the parameters are as commented below. These are the values which we found work the best for us in our use case. Please change these values if you require a different behavior of the robot.
+
+    #variables affecting targeting
+    TARGETspeedchange = 0.05 #forward speed for targeting
+    TARGETrotatechange = 0.1 #rotation speed for targeting
+    TARGET_hotthreshhold = 31 #target temperature
+    TARGETshoot_distance = 0.45 #distance from center of lidar to front before shooting
+    TARGET_front_angle = 3 #angle of front to measure distance
+    TARGET_moveres = 0.2 #time for sleep when moving
+    TARGET_target_not_detected_threshhold = 2 #How long in seconds before target considered as not detected
+    
+    
+    # variables affecting navigation
+    fastspeedchange = 0.2 #speed when bot moving fast linear speed
+    slowspeedchange = 0.12 #speed when bot moving slow linear speed
+    
+    turning_speed_wf_fast = 1.1 #fast turning speed for bot
+    turning_speed_wf_medium = 0.75 #medium turning speed for bot
+    turning_speed_wf_slow = 0.5 #slow turning speed for bot
+    
+    front_d = 0.45 #threshhold front distance that robot should not enter
+    side_d = 0.45 #threshold side distance that robot should not enter
+    
+    target_count_threshhold = 5 # (how long you want hot_target to be spotted before activating firing) / hot_timer_delay = target_count_threshhold
+    hot_timer_delay = 0.1 # in seconds
 
 
 
